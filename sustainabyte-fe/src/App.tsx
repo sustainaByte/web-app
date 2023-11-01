@@ -1,23 +1,20 @@
 import React from 'react';
 import './App.css';
+import { ThemeProvider } from "styled-components";
+import {defaultTheme} from "./Themes/default-theme";
+import {Route, Routes} from "react-router-dom";
+import PageLayout from "./Components/PageLayout/pageLayout";
+import Homepage from "./Components/Home/home";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <ThemeProvider theme={defaultTheme}>
+        <Routes>
+          <Route element={<PageLayout />}>
+            <Route path="/" element={<Homepage /> } />
+          </Route>
+        </Routes>
+      </ThemeProvider>
   );
 }
 
