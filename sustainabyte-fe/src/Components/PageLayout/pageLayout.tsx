@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Header from "../Header/header";
-import { Main } from "./pageLayoutStyle";
+import Container from "@mui/material/Container";
 
 const PageLayout = () => {
     return (
-        <Main>
+        <Container component={"main"}>
             <Header />
             <Outlet />
-        </Main>
+        </Container>
     )
 }
 

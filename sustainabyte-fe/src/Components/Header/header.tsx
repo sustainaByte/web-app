@@ -1,36 +1,35 @@
 import './header.scss'
-import { HeaderButton, StyledHeader, Title } from './headerStyle'
-
+import Button from "@mui/material/Button";
 
 const Header = () => {
     return (
-        <StyledHeader>
+        <header>
             <div className='header-container'>
-                <Title></Title>
+                <h2></h2>
                 <ul className='header-list'>
-                    <HeaderButton>
+                    <Button>
                         <a href="#">
                             Item
                         </a>
-                    </HeaderButton>
-                    <HeaderButton>
+                    </Button>
+                    <Button>
                         <a href="#">
                             Item
                         </a>
-                    </HeaderButton>
-                    <HeaderButton>
+                    </Button>
+                    <Button>
                         <a href="#">
                             Item
                         </a>
-                    </HeaderButton>
-                    <HeaderButton>
+                    </Button>
+                    <Button>
                         <a href="#">
                             Item
                         </a>
-                    </HeaderButton>
+                    </Button>
                 </ul>
             </div>
-        </StyledHeader>
+        </header>
     )
 }
 
