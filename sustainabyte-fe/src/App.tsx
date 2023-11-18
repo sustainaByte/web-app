@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import PageLayout from "./Components/PageLayout/pageLayout";
 import Homepage from "./Components/Home/home";
 import LoginPage from "./Components/Login/login";
+import HomepagePost from './Components/Posts/HomepagePost/homepagePost';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {PaletteMode, useMediaQuery} from "@mui/material";
 import getDesignTokens from "./Components/PageLayout/theme";
@@ -37,6 +38,7 @@ function App() {
                         <Route path="/" element={<Homepage/>}/>
                     </Route>
                     <Route path="login" element={<LoginPage/>}/>
+                    <Route path="homepagePost" element={<HomepagePost/>}/>    {/* ! delete this route */}
                 </Routes>
             </ThemeProvider>
         </ColorModeContext.Provider>
