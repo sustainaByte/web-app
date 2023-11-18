@@ -5,6 +5,7 @@ import {useTheme} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import useFetchPosts from "../Posts/useFetchPosts";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export interface Post {
     "title": "string",
@@ -43,7 +44,6 @@ const PostsFeed = () => {
 const RegisterFeed = () => {
     // @ts-ignore
     const { authKey } = useAuth()
-    const theme = useTheme()
 
     // check if user is not connected
     if (!authKey) {
@@ -81,7 +81,18 @@ const LeftFeed = () => {
                 width: "20%"
             }}
         >
-            <p>left feed</p>
+            <Button
+                sx={{
+                    color: "inherit"
+                }}
+            >
+                <SettingsIcon
+                    sx={{
+                        marginRight: '5px'
+                    }}
+                />
+                <p>Settings</p>
+            </Button>
         </Box>
     )
 }
