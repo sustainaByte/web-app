@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,7 +9,49 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {useLocalStorage} from "./useLocalStorage";
+import {useNavigate} from "react-router-dom";
+import {createContext, useContext, useMemo} from "react";
+
+const AuthContext = createContext({})
+
+export const AuthProvider = ({ children }: any) => {
+    const [authKey, setAuthKey] = useLocalStorage("user", null),
+        navigate = useNavigate();
+
+    const login = async (data: any) => {
+        if (data.message)
+            throw new Error(data.message)
+        setAuthKey(data);
+        navigate("/user/account")
+    }
+
+    const logout = async () => {
+        setAuthKey(null)
+        await fetch('http://localhost:3000/user/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        navigate("/", {replace: true})
+    }
+
+    const value = useMemo(
+        () => ({
+            authKey,
+            login,
+            logout
+        }),
+        [authKey]
+    )
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
+
+export const useAuth = () => {
+    return useContext(AuthContext);
+};
 
 const Login = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
