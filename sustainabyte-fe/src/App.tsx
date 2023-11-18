@@ -38,7 +38,6 @@ function App() {
                         <Route path="/" element={<Homepage/>}/>
                     </Route>
                     <Route path="login" element={<LoginPage/>}/>
-                    <Route path="homepagePost" element={<HomepagePost/>}/>    {/* ! delete this route */}
                 </Routes>
             </ThemeProvider>
         </ColorModeContext.Provider>
