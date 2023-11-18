@@ -4,19 +4,39 @@ import {useAuth} from "../Login/login";
 import {useTheme} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import useFetchPosts from "../Posts/useFetchPosts";
+
+export interface Post {
+    "title": "string",
+    "content": "string",
+    "creatorId": "string",
+    "kudos": 0,
+    "mediaURL": [
+        "string"
+    ],
+    "createdAt": "2023-11-18T14:33:24.280Z",
+    "updatedAt": "2023-11-18T14:33:24.280Z",
+    "_id": "string",
+    "__v": 0
+}
 
 const PostsFeed = () => {
-    // TODO: add posts inside container
+
+
+    // @ts-ignore
+    const posts = useFetchPosts()['data']
+
+    // TODO: use Post component and plug in information
     return (
-        <Container
+        <Box
             component="div"
             sx={{
                 width: "60%",
                 alignItems: "center"
             }}
         >
-            <p>posts feed</p>
-        </Container>
+            {posts && posts.map((post: Post) => post.content)}
+        </Box>
     )
 }
 
@@ -28,26 +48,22 @@ const RegisterFeed = () => {
     // check if user is not connected
     if (!authKey) {
         return (
-            <Container
+            <Box
                 component="div"
                 sx={{
                     width: "20%",
+                    borderRadius: '1rem',
+                    backgroundColor: 'black',
+                    p: 1
                 }}
             >
-                <Box>
-                    <h2>New to SustainaByte?</h2>
-                    <Button
-                        color={"inherit"}
-                    >
-                        Register
-                    </Button>
-                    <Button
-                        color={"inherit"}
-                    >
-                        Log in
-                    </Button>
-                </Box>
-            </Container>
+                <h2>New to SustainaByte?</h2>
+                <Button
+                    color={"inherit"}
+                >
+                    Register
+                </Button>
+            </Box>
         )
     }
 
@@ -59,14 +75,14 @@ const RegisterFeed = () => {
 
 const LeftFeed = () => {
     return (
-        <Container
+        <Box
             component="div"
             sx={{
                 width: "20%"
             }}
         >
             <p>left feed</p>
-        </Container>
+        </Box>
     )
 }
 
