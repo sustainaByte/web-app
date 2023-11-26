@@ -10,14 +10,17 @@ import {green} from '@mui/material/colors';
 import {Post} from '../posts';
 import Button from '@mui/material/Button/Button';
 import Container from '@mui/material/Container';
-import {Box, useTheme} from '@mui/material';
+import {Badge, Box, useTheme} from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ParkIcon from '@mui/icons-material/Park';
 import CommentIcon from '@mui/icons-material/Comment';
 
+import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
 const HomepagePost = (post: Post) => {
 
-   const theme = useTheme()
+   const theme = useTheme();
+
+
 
     return (
         <Card
@@ -67,17 +70,27 @@ const HomepagePost = (post: Post) => {
             </CardContent>
             
             <Box>
-              <Button sx={{ color: `${theme.palette.text.primary}` }}>
-                 <ParkIcon />
+                <Button
+                sx={{ color: `${theme.palette.text.primary}` }}
+              >
+                <Badge badgeContent={post.kudos} color="error">
+                  <ParkIcon />
+                </Badge>
+                <Typography sx={{ marginLeft: '4px', marginTop: '5px', color: `${theme.palette.text.secondary}` }} variant="body2">
+                  {post.kudos} Likes
+                </Typography>
               </Button>
-             
+              
               <Button sx={{ color: `${theme.palette.text.primary}` }}>
                  <ShareIcon />
               </Button>
               
-              <Button sx={{ color: `${theme.palette.text.primary}` }}>
-                 <CommentIcon />
+              <Button>
+                 <Badge badgeContent={10000} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
+                    <QuestionAnswerOutlinedIcon style={{fill: `${theme.palette.text.primary}`}} />
+                  </Badge>
               </Button>
+             
 
             </Box>
 
