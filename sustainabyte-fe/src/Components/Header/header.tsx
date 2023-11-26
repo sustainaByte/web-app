@@ -18,7 +18,7 @@ const Header = () => {
             <div className='header-container'>
                 <ul className='header-list'>
                     <img src={logo} alt="logo"/>
-                    <TextField color="primary" id="outlined-basic" label="Search" variant="outlined"/>
+                    <TextField color="primary" id="search" label="Search" variant="outlined"/>
                 </ul>
                 <ul className='header-list'>
                     <IconButton aria-label="menu" sx={{color: `${theme.palette.text.primary}`}}>

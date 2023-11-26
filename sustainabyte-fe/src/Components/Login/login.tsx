@@ -10,20 +10,29 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useLocalStorage} from "./useLocalStorage";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {createContext, useContext, useMemo} from "react";
+import {List, ListItem} from "@mui/material";
 
-const AuthContext = createContext({})
+// @ts-ignore
+const AuthContext = createContext()
+
+export interface LoginError {
+    message: string,
+    code: string
+}
 
 export const AuthProvider = ({ children }: any) => {
     const [authKey, setAuthKey] = useLocalStorage("user", null),
         navigate = useNavigate();
 
     const login = async (data: any) => {
-        if (data.message)
-            throw new Error(data.message)
+        if (data.errors) {
+            data.errors.forEach((error: LoginError) => { throw new Error(error.message) })
+        }
+
         setAuthKey(data);
-        navigate("/user/account")
+        navigate("/")
     }
 
     const logout = async () => {
@@ -53,14 +62,29 @@ export const useAuth = () => {
     return useContext(AuthContext);
 };
 
-const Login = () => {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+const LoginForm = () => {
+    // @ts-ignore
+    const { login } = useAuth()
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+
+        try {
+            // because I need to fetch auth key using email and password
+            await fetch('https://ea83-2a02-a58-84f9-ee00-8973-ccfc-8bda-b8fa.ngrok-free.app/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "email": data.get("email"),
+                    "password": data.get("password")
+                })
+            }).then(res => res.json()).then(data => login(data))
+        } catch (err) {
+            alert(err)
+        }
     };
 
     return (
@@ -87,6 +111,8 @@ const Login = () => {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        color="primary"
+                        variant="standard"
                     />
                     <TextField
                         margin="normal"
@@ -97,6 +123,8 @@ const Login = () => {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        color="primary"
+                        variant="standard"
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
@@ -142,20 +170,31 @@ const LoginHeroHeader = () => {
                     marginTop: 8,
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
+                    alignItems: 'left',
                     color: 'text.primary',
                 }}
             >
-                <h2>Hello There!</h2>
-                <p>
-                    While we strive to follow the Material Design guidelines where practical (applying common sense where guidelines contradict - a more common occurrence than one might expect), we do not expect to support every component, nor every feature of every component, but rather to provide the building blocks to allow developers to create compelling user interfaces and experiences.
-                </p>
+                <h3> 🌿 Ready to dive back into the green community? Your journey to a sustainable lifestyle continues here! </h3>
+                <p> 🌏 Sign in to sustainaByte and: </p>
+                <List>
+                    <ListItem>🌱 Reconnect with eco-conscious friends.</ListItem>
+                    <ListItem>🔄 Pick up where you left off on green initiatives.</ListItem>
+                    <ListItem>🌐 Stay updated on the latest environmental trends.</ListItem>
+                </List>
+                <p>Your commitment to sustainability starts with each login. Let's keep the momentum going! 💚</p>
             </Box>
         </Container>
     )
 }
 
 const LoginPage = () => {
+    // @ts-ignore
+    const { authKey } = useAuth()
+
+    if (authKey) {
+        return <Navigate to={"/ "} replace={true}/>
+    }
+
     return (
         <Container
             component="div"
@@ -167,7 +206,7 @@ const LoginPage = () => {
                 backgroundColor: '${props => props.theme.colors.background}'
             }}
         >
-            <Login />
+            <LoginForm />
             <LoginHeroHeader />
         </Container>
     )
