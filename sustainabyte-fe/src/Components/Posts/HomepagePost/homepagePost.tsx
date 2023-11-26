@@ -1,7 +1,6 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
@@ -10,17 +9,28 @@ import {green} from '@mui/material/colors';
 import {Post} from '../posts';
 import Button from '@mui/material/Button/Button';
 import Container from '@mui/material/Container';
-import {Badge, Box, useTheme} from '@mui/material';
+import {Badge, Box, MobileStepper, useTheme} from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ParkIcon from '@mui/icons-material/Park';
-import CommentIcon from '@mui/icons-material/Comment';
-
 import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+
+
 const HomepagePost = (post: Post) => {
 
-   const theme = useTheme();
+    const theme = useTheme();
 
+    const images = post.mediaUrl;
+    const [activeStep, setActiveStep] = useState(0);
+    const maxSteps = images.length;
 
+    const handleNext = () => {
+      setActiveStep((activeStep + 1) % maxSteps);
+    };
+    
+    const handleBack = () => {
+      setActiveStep(activeStep === 0 ? maxSteps - 1 : activeStep - 1);
+    };
 
     return (
         <Card
@@ -48,14 +58,53 @@ const HomepagePost = (post: Post) => {
               subheader={post._id}
 
             />
-              {
-                  post && post.mediaUrl && post?.mediaUrl.length > 0 &&
-                  <CardMedia
+
+            {post && post.mediaUrl && post?.mediaUrl.length > 0 ? (
+              <Box sx={{ 
+                maxWidth: 600,
+                flexGrow: 1,
+                borderRadius: 5, 
+                overflow: 'hidden',
+                
+                }}>
+
+                {images.map((imageUrl, index) => (
+                  <div key={index} style={{ display: index === activeStep ? 'block' : 'none' }}>
+                    <Box
                       component="img"
-                      sx={{ maxHeight: "200px" }}
-                      src={post.mediaUrl[0]}
-                  />
-              }
+                      sx={{
+                        height: 255,
+                        display: 'block',
+                        maxWidth: 600,
+                        overflow: 'hidden',
+                        width: '100%',
+                      }}
+                      src={imageUrl}
+                      alt={`Image ${index + 1}`}
+                    />
+                  </div>
+                ))}
+
+                <MobileStepper
+                  steps={maxSteps}
+                  position="static"
+                  activeStep={activeStep}
+                  nextButton={
+                    <Button size="small" onClick={handleNext}>
+                      Next
+                      {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                    </Button>
+                  }
+                  backButton={
+                    <Button size="small" onClick={handleBack}>
+                      {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                      Back
+                    </Button>
+                  }
+                />
+              </Box>
+            ) : null}
+            
             <CardContent>
                 <Typography
                     sx={{
@@ -69,7 +118,7 @@ const HomepagePost = (post: Post) => {
                 </Typography>
             </CardContent>
             
-            <Box>
+            <Box sx={{ marginTop:'-15px', }}>
                 <Button
                 sx={{ color: `${theme.palette.text.primary}` }}
               >
@@ -85,15 +134,13 @@ const HomepagePost = (post: Post) => {
                  <ShareIcon />
               </Button>
               
-              <Button>
+              <Button sx={{ float:'right' }}>
                  <Badge badgeContent={10000} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
                     <QuestionAnswerOutlinedIcon style={{fill: `${theme.palette.text.primary}`}} />
                   </Badge>
               </Button>
              
-
             </Box>
-
           </Container>
         </Card>
       );
