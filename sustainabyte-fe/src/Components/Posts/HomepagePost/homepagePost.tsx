@@ -15,6 +15,8 @@ import ParkIcon from '@mui/icons-material/Park';
 import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 
+import CommentBox from '../Comment/comment';
+
 
 const HomepagePost = (post: Post) => {
 
@@ -31,7 +33,11 @@ const HomepagePost = (post: Post) => {
     const handleBack = () => {
       setActiveStep(activeStep === 0 ? maxSteps - 1 : activeStep - 1);
     };
-
+    
+  const [areCommentsVisible, setAreCommentsVisible] = useState(false);
+  const handleCommentClick = () => {
+    setAreCommentsVisible(!areCommentsVisible);
+  };
     return (
         <Card
             component="div"
@@ -134,11 +140,17 @@ const HomepagePost = (post: Post) => {
                  <ShareIcon />
               </Button>
               
-              <Button sx={{ float:'right' }}>
+              <Button sx={{ float:'right' }} onClick={handleCommentClick}>
                  <Badge badgeContent={10000} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
                     <QuestionAnswerOutlinedIcon style={{fill: `${theme.palette.text.primary}`}} />
                   </Badge>
               </Button>
+
+              {
+              areCommentsVisible && (
+                <CommentBox></CommentBox>
+              )}
+
              
             </Box>
           </Container>
