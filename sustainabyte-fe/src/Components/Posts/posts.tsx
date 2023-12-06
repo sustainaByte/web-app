@@ -2,10 +2,10 @@ export interface Post {
         "title": string,
         "content": string,
         "creatorId": string,
-        "kudos": 0,
+        "kudos": number,
         "mediaUrl": string[],
-        "createdAt": string,
-        "updatedAt": string,
-        "_id": "string",
-        "__v": 0
+        "createdAt"?: string,
+        "updatedAt"?: string,
+        "_id"?: string,
+        "__v"?: number
     }
