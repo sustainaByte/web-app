@@ -26,13 +26,59 @@ export const AuthProvider = ({ children }: any) => {
     const [authKey, setAuthKey] = useLocalStorage("user", null),
         navigate = useNavigate();
 
-    const login = async (data: any) => {
-        if (data.errors) {
-            data.errors.forEach((error: LoginError) => { throw new Error(error.message) })
-        }
+    const login = async (email: any, password: any) => {
+        await fetch('https://f126-2a02-a58-84f9-ee00-612d-f040-cb9f-e341.ngrok-free.app/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "email": email,
+                "password": password
+            })
+        }).then(res => res.json())
+            .then(data => {
+                if (!data.errors) {
+                    setAuthKey(data)
+                    navigate("/")
+                }
+                else {
+                    data.errors.forEach((error: LoginError) => { throw new Error(error.message) })
+                }
+            })
+    }
 
-        setAuthKey(data);
-        navigate("/")
+    const register = async (email: any, password: any, name: any, surname: any, phoneNumber: any,
+                            city: any, country: any, street: any, streetNumber: any) => {
+        await fetch('https://f126-2a02-a58-84f9-ee00-612d-f040-cb9f-e341.ngrok-free.app/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "email": email,
+                "password": password,
+                "name": name,
+                "surname": surname,
+                "phoneNumber": phoneNumber,
+                "address": JSON.stringify([
+                    city,
+                    country,
+                    street,
+                    streetNumber
+                ])
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.errors) {
+                    login(email, password)
+                }
+                else {
+                    data.errors.forEach((error: LoginError) => { throw new Error(error.message) })
+                }
+            })
+            .catch(err => alert(err))
     }
 
     const logout = async () => {
@@ -50,7 +96,8 @@ export const AuthProvider = ({ children }: any) => {
         () => ({
             authKey,
             login,
-            logout
+            logout,
+            register
         }),
         [authKey]
     )
@@ -70,21 +117,7 @@ const LoginForm = () => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        try {
-            // because I need to fetch auth key using email and password
-            await fetch('https://ea83-2a02-a58-84f9-ee00-8973-ccfc-8bda-b8fa.ngrok-free.app/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "email": data.get("email"),
-                    "password": data.get("password")
-                })
-            }).then(res => res.json()).then(data => login(data))
-        } catch (err) {
-            alert(err)
-        }
+        login(data.get('email'), data.get('password'))
     };
 
     return (

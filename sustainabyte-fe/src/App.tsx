@@ -7,6 +7,7 @@ import HomepagePost from './Components/Posts/HomepagePost/homepagePost';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {PaletteMode, useMediaQuery} from "@mui/material";
 import getDesignTokens from "./Components/PageLayout/theme";
+import RegisterPage from "./Components/Register/register";
 
 export const ColorModeContext = React.createContext({
     toggleColorMode: () => {
@@ -38,6 +39,7 @@ function App() {
                         <Route path="/" element={<Homepage/>}/>
                     </Route>
                     <Route path="login" element={<LoginPage/>}/>
+                    <Route path="register" element={<RegisterPage/>}/>
                 </Routes>
             </ThemeProvider>
         </ColorModeContext.Provider>
