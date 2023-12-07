@@ -5,7 +5,7 @@ const useFetchPosts = () => {
     const [err, setErr] = useState(null)
 
     useEffect(() => {
-        fetch('https://0132-2a02-a58-84f9-ee00-a99a-10fb-2e9c-d1cf.ngrok-free.app/posts',
+        fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts',
             {
                 method: "get",
                 headers: new Headers({
