@@ -19,25 +19,25 @@ import CommentBox from '../Comment/comment';
 
 
 const HomepagePost = (post: Post) => {
-
-    const theme = useTheme();
-
-    const images = post.mediaUrl;
     const [activeStep, setActiveStep] = useState(0);
-    const maxSteps = images.length;
+    const [areCommentsVisible, setAreCommentsVisible] = useState(false);
 
     const handleNext = () => {
-      setActiveStep((activeStep + 1) % maxSteps);
+        setActiveStep((activeStep + 1) % maxSteps);
     };
-    
+
     const handlePrevious = () => {
-      setActiveStep(activeStep === 0 ? maxSteps - 1 : activeStep - 1);
+        setActiveStep(activeStep === 0 ? maxSteps - 1 : activeStep - 1);
     };
-    
-  const [areCommentsVisible, setAreCommentsVisible] = useState(false);
-  const handleCommentClick = () => {
-    setAreCommentsVisible(!areCommentsVisible);
-  };
+
+    const handleCommentClick = () => {
+        setAreCommentsVisible(!areCommentsVisible);
+    };
+
+    const theme = useTheme();
+    const images = post.mediaUrl;
+    const maxSteps = images.length;
+
     return (
         <Card
             component="div"

@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: any) => {
         navigate = useNavigate();
 
     const login = async (email: any, password: any) => {
-        await fetch('https://f126-2a02-a58-84f9-ee00-612d-f040-cb9f-e341.ngrok-free.app/users/login', {
+        await fetch('https://0132-2a02-a58-84f9-ee00-a99a-10fb-2e9c-d1cf.ngrok-free.app/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: any) => {
 
     const register = async (email: any, password: any, name: any, surname: any, phoneNumber: any,
                             city: any, country: any, street: any, streetNumber: any) => {
-        await fetch('https://f126-2a02-a58-84f9-ee00-612d-f040-cb9f-e341.ngrok-free.app/users/register', {
+        await fetch('https://0132-2a02-a58-84f9-ee00-a99a-10fb-2e9c-d1cf.ngrok-free.app/users/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

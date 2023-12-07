@@ -10,8 +10,6 @@ import HomepagePost from "../Posts/HomepagePost/homepagePost";
 import {Post} from "../Posts/posts";
 
 const PostsFeed = () => {
-
-
     // @ts-ignore
     const posts = useFetchPosts()['data']
 
