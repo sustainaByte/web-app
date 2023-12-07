@@ -38,7 +38,6 @@ function App() {
                         <Route path="/" element={<Homepage/>}/>
                     </Route>
                     <Route path="login" element={<LoginPage/>}/>
-                    <Route path="/post" element={<HomepagePost title={''} content={''} creatorId={''} kudos={0} mediaUrl={[]} createdAt={''} updatedAt={''} _id={'string'} __v={0}/>}/>
                 </Routes>
             </ThemeProvider>
         </ColorModeContext.Provider>
