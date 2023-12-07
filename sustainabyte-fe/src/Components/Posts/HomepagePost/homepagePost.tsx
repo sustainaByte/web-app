@@ -161,5 +161,3 @@ const HomepagePost = (post: Post) => {
 
 
 export default HomepagePost
-
-
