@@ -30,7 +30,7 @@ const HomepagePost = (post: Post) => {
       setActiveStep((activeStep + 1) % maxSteps);
     };
     
-    const handleBack = () => {
+    const handlePrevious = () => {
       setActiveStep(activeStep === 0 ? maxSteps - 1 : activeStep - 1);
     };
     
@@ -102,9 +102,9 @@ const HomepagePost = (post: Post) => {
                     </Button>
                   }
                   backButton={
-                    <Button size="small" onClick={handleBack}>
+                    <Button size="small" onClick={handlePrevious}>
                       {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-                      Back
+                      Previous
                     </Button>
                   }
                 />
@@ -128,7 +128,7 @@ const HomepagePost = (post: Post) => {
                 <Button
                 sx={{ color: `${theme.palette.text.primary}` }}
               >
-                <Badge badgeContent={post.kudos} color="error">
+                <Badge color="error">
                   <ParkIcon />
                 </Badge>
                 <Typography sx={{ marginLeft: '4px', marginTop: '5px', color: `${theme.palette.text.secondary}` }} variant="body2">
