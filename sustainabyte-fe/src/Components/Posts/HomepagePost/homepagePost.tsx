@@ -85,7 +85,7 @@ const HomepagePost = (post: Post) => {
                         overflow: 'hidden',
                         width: '100%',
                       }}
-                      src={imageUrl}
+                      src=""
                       alt={`Image ${index + 1}`}
                     />
                   </div>

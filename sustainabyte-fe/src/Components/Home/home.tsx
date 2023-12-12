@@ -23,7 +23,12 @@ const PostsFeed = () => {
                 gap: '20px'
             }}
         >
-            {posts && posts.map((post: Post) => HomepagePost(post))}
+            {posts?.map((post: Post) => <HomepagePost
+                kudos={post.kudos}
+                content={post.content}
+                creatorId={post.creatorId}
+                title={post.title}
+                mediaUrl={post.mediaUrl} />)}
         </Box>
     )
 }

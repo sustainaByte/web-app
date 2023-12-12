@@ -12,7 +12,6 @@ const CommentBox = () => {
     "ipsum comment 2"
   ]);
 
-  const theme = useTheme();
   const handleCommentChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setNewComment(event.target.value);
   };

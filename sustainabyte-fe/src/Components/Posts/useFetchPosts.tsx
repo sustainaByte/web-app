@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 
 const useFetchPosts = () => {
-    const [posts, setPosts] = useState({})
+    const [posts, setPosts] = useState([])
     const [err, setErr] = useState(null)
 
     useEffect(() => {
