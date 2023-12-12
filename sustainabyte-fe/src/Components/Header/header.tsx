@@ -1,4 +1,4 @@
-import { IconButton, TextField, useTheme } from "@mui/material";
+import { IconButton, TextField, useTheme, Box } from "@mui/material";
 import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <header>
-      <div className="header-container">
+      <Box className="header-container">
         <ul className="header-list">
           <img src={logo} alt="logo" />
           <TextField
@@ -56,7 +56,7 @@ const Header = () => {
             </>
           )}
         </ul>
-      </div>
+      </Box>
     </header>
   );
 };
