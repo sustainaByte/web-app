@@ -1,73 +1,97 @@
-import {IconButton, TextField, useTheme, Box, List, ListItemButton} from "@mui/material";
+import {IconButton, TextField, useTheme, Box, List, ListItemButton, MenuItem} from "@mui/material";
 import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Menu } from '@mui/base/Menu';
-import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
+import Menu from '@mui/material/Menu';
 import "./header.scss";
 // @ts-ignore
 import logo from "../../images/logo2.png";
 import { useAuth } from "../Login/login";
-import { useState } from "react";
+import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
 
 const Dropdown = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const theme = useTheme();
-  // @ts-ignore
-  const { authKey, logout } = useAuth();
-  const navigate = useNavigate()
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const theme = useTheme();
+    // @ts-ignore
+    const { authKey, logout } = useAuth();
+    const navigate = useNavigate()
 
-  return (
-      <li>
-        <IconButton
-            aria-label="menu"
-            sx={{ color: `${theme.palette.text.primary}` }}
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        >
-          <WidgetsOutlinedIcon />
-        </IconButton>
-        {isDropdownOpen && (
-            <List
-                className="dropdown-list"
-                sx={{
-                  backgroundColor: `${theme.palette.text.primary}`,
-                  right: `${!authKey && '20px'}`
-                }}
-            >
-              {authKey && (
-                  <ListItemButton
-                      onClick={() => {
-                        logout()
-                        navigate("/")
-                      }}
-                  >
-                    Logout
-                  </ListItemButton>
-              )}
-              {!authKey && (
-                  <>
-                    <ListItemButton
-                        onClick={() => navigate("/register")}
-                    >
-                      Register
-                    </ListItemButton>
-                    <ListItemButton
-                        onClick={() => navigate("/login")}
-                    >
-                      Login
-                    </ListItemButton>
-                  </>
-              )}
-                <ListItemButton
-                    onClick={() => navigate("/settings")}
+    return (
+          <li>
+                <IconButton
+                    aria-label="basic-button"
+                    aria-controls={open ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    sx={{ color: `${theme.palette.text.primary}` }}
+                    onClick={handleClick}
                 >
-                    Settings
-                </ListItemButton>
-            </List>
-        )}
-      </li>
-  )
+                  <WidgetsOutlinedIcon />
+                </IconButton>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
+                    className="dropdown-list"
+                    sx={{
+                        right: `${!authKey && '20px'}`
+                    }}
+                >
+
+                    {authKey && (
+                          <MenuItem
+                              onClick={() => {
+                                  handleClose()
+                                  logout()
+                                  navigate("/")
+                              }}
+                          >
+                            Logout
+                          </MenuItem>
+                    )}
+                          {!authKey && (
+                              <>
+                                    <MenuItem
+                                        onClick={() => {
+                                            handleClose()
+                                            navigate("/register")
+                                        }}
+                                    >
+                                      Register
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => {
+                                            handleClose()
+                                            navigate("/login")
+                                        }}
+                                    >
+                                      Login
+                                    </MenuItem>
+                              </>
+                          )}
+                        <MenuItem
+                            onClick={() => {
+                                handleClose()
+                                navigate("/settings")
+                            }}
+                        >
+                            Settings
+                        </MenuItem>
+                </Menu>
+          </li>
+      )
 }
 
 const Header = () => {
