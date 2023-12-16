@@ -70,6 +70,8 @@ const RegisterFeed = () => {
 }
 
 const LeftFeed = () => {
+    const navigate = useNavigate()
+
     return (
         <Box
             component="div"
@@ -81,6 +83,7 @@ const LeftFeed = () => {
                 sx={{
                     color: "inherit"
                 }}
+                onClick={() => navigate("/settings")}
             >
                 <SettingsIcon
                     sx={{
