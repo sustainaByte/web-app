@@ -59,6 +59,11 @@ const Dropdown = () => {
                     </ListItemButton>
                   </>
               )}
+                <ListItemButton
+                    onClick={() => navigate("/settings")}
+                >
+                    Settings
+                </ListItemButton>
             </List>
         )}
       </li>
