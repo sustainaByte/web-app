@@ -1,10 +1,102 @@
-import {Button, useTheme} from "@mui/material";
+import {
+    Drawer,
+    Divider,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Button,
+    useTheme,
+    Input,
+    Typography
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import {useAuth} from "../Login/login";
 import {Navigate, useNavigate} from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ParkIcon from '@mui/icons-material/Park';
+import EventIcon from '@mui/icons-material/Event';
+import Container from "@mui/material/Container";
 
+const AccountInformation = () => {
+    const theme = useTheme()
 
+    return (
+        <Container component={"div"}
+             sx={{
+                 display: 'flex',
+                 flexDirection: 'column',
+                 gap: '10px',
+                 width: '80%',
+                 ml: '20%',
+                 pt: '50px'
+            }}
+        >
+            <Typography mb="50px" fontSize={24} component="p" color="primary">
+                Change your information
+            </Typography>
+            <Box component={"div"}>
+                <Input placeholder="Type in here…" />
+            </Box>
+        </Container>
+    )
+}
+
+const LeftDrawer = () => {
+    const theme = useTheme()
+    const navigate = useNavigate()
+
+    return (
+        <Drawer
+            sx={{
+                width: '20%',
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                    width: '20%',
+                    boxSizing: 'border-box',
+                },
+            }}
+            variant="permanent"
+            anchor="left"
+        >
+            <Button
+                onClick={() => navigate("/")}
+            >
+                <ArrowBackIcon />
+                <p>Go back</p>
+            </Button>
+            <Divider />
+            <List>
+                <ListItem key={"Account Information"} disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <AccountCircleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Account Information"} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem key={"Posts"} disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <ParkIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Posts"} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem key={"Events"} disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <EventIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Events"} />
+                    </ListItemButton>
+                </ListItem>
+            </List>
+        </Drawer>
+    )
+}
 
 const SettingsPage = () => {
     // @ts-ignore
@@ -25,13 +117,8 @@ const SettingsPage = () => {
                 backgroundColor: `${theme.palette.background.default}`
             }}
         >
-            <Button
-                sx={{ color: `${theme.palette.text.primary}` }}
-                onClick={() => navigate("/")}
-            >
-                <ArrowBackIcon />
-                <p>Go back</p>
-            </Button>
+            <AccountInformation />
+            <LeftDrawer />
         </Box>
     )
 }
