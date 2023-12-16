@@ -1,0 +1,15 @@
+.homepage-container {
+  @media (max-width: 767px) {
+    flex-direction: column;
+
+    div {
+      width: 95%;
+    }
+  }
+}
+
+.register-box {
+  @media (max-width: 767px) {
+    margin: 10px 0;
+  }
+}
