@@ -1,17 +1,104 @@
-import { IconButton, TextField, useTheme, Box } from "@mui/material";
+import {IconButton, TextField, useTheme, Box, List, ListItemButton, MenuItem} from "@mui/material";
 import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ChatIcon from "@mui/icons-material/Chat";
+import Menu from '@mui/material/Menu';
 import "./header.scss";
 // @ts-ignore
 import logo from "../../images/logo2.png";
 import { useAuth } from "../Login/login";
+import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
+
+const Dropdown = () => {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const theme = useTheme();
+    // @ts-ignore
+    const { authKey, logout } = useAuth();
+    const navigate = useNavigate()
+
+    return (
+          <li>
+                <IconButton
+                    aria-label="basic-button"
+                    aria-controls={open ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    sx={{ color: `${theme.palette.text.primary}` }}
+                    onClick={handleClick}
+                >
+                  <WidgetsOutlinedIcon />
+                </IconButton>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
+                    className="dropdown-list"
+                    sx={{
+                        right: `${!authKey && '20px'}`
+                    }}
+                >
+
+                    {authKey && (
+                          <MenuItem
+                              onClick={() => {
+                                  handleClose()
+                                  logout()
+                                  navigate("/")
+                              }}
+                          >
+                            Logout
+                          </MenuItem>
+                    )}
+                          {!authKey && (
+                              <>
+                                    <MenuItem
+                                        onClick={() => {
+                                            handleClose()
+                                            navigate("/register")
+                                        }}
+                                    >
+                                      Register
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => {
+                                            handleClose()
+                                            navigate("/login")
+                                        }}
+                                    >
+                                      Login
+                                    </MenuItem>
+                              </>
+                          )}
+                        <MenuItem
+                            onClick={() => {
+                                handleClose()
+                                navigate("/settings")
+                            }}
+                        >
+                            Settings
+                        </MenuItem>
+                </Menu>
+          </li>
+      )
+}
 
 const Header = () => {
   const theme = useTheme();
   // @ts-ignore
-  const { authKey } = useAuth();
+  const { authKey, logout } = useAuth();
+  const navigate = useNavigate()
 
   return (
     <header>
@@ -26,33 +113,25 @@ const Header = () => {
           />
         </ul>
         <ul className="header-list">
-          <IconButton
-            aria-label="menu"
-            sx={{ color: `${theme.palette.text.primary}` }}
-          >
-            <WidgetsOutlinedIcon />
-          </IconButton>
-
+          <Dropdown />
           {authKey && (
             <>
-              <IconButton
-                aria-label="chat"
-                sx={{ color: `${theme.palette.text.primary}` }}
-              >
-                <ChatIcon />
-              </IconButton>
-              <IconButton
-                aria-label="notifications"
-                sx={{ color: `${theme.palette.text.primary}` }}
-              >
-                <NotificationsNoneIcon />
-              </IconButton>
-              <IconButton
+              <li>
+                <IconButton
+                  aria-label="notifications"
+                  sx={{ color: `${theme.palette.text.primary}` }}
+                >
+                  <NotificationsNoneIcon />
+                </IconButton>
+              </li>
+              <li>
+                <IconButton
                 aria-label="profile"
                 sx={{ color: `${theme.palette.text.primary}` }}
               >
-                <AccountCircleIcon />
-              </IconButton>
+                  <AccountCircleIcon />
+                </IconButton>
+              </li>
             </>
           )}
         </ul>

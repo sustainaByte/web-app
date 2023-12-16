@@ -61,12 +61,12 @@ export const AuthProvider = ({ children }: any) => {
                 "name": name,
                 "surname": surname,
                 "phoneNumber": phoneNumber,
-                "address": JSON.stringify([
-                    city,
-                    country,
-                    street,
-                    streetNumber
-                ])
+                "address": {
+                    "city": city,
+                    "country": country,
+                    "street": street,
+                    "streetNumber": streetNumber
+                }
             })
         })
             .then(res => res.json())

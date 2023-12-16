@@ -8,6 +8,7 @@ import useFetchPosts from "../Posts/useFetchPosts";
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomepagePost from "../Posts/HomepagePost/homepagePost";
 import {Post} from "../Posts/posts";
+import {useNavigate} from "react-router-dom";
 
 const PostsFeed = () => {
     // @ts-ignore
@@ -36,6 +37,7 @@ const PostsFeed = () => {
 const RegisterFeed = () => {
     // @ts-ignore
     const { authKey } = useAuth()
+    const navigate = useNavigate()
 
     // check if user is not connected
     if (!authKey) {
@@ -54,6 +56,7 @@ const RegisterFeed = () => {
                 <h2>New to SustainaByte?</h2>
                 <Button
                     color={"inherit"}
+                    onClick={() => navigate("/register")}
                 >
                     Register
                 </Button>
@@ -68,6 +71,8 @@ const RegisterFeed = () => {
 }
 
 const LeftFeed = () => {
+    const navigate = useNavigate()
+
     return (
         <Box
             component="div"
@@ -79,6 +84,7 @@ const LeftFeed = () => {
                 sx={{
                     color: "inherit"
                 }}
+                onClick={() => navigate("/settings")}
             >
                 <SettingsIcon
                     sx={{
