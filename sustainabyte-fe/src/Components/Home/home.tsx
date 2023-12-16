@@ -49,6 +49,7 @@ const RegisterFeed = () => {
                     p: 1,
                     height: 'max-content'
                 }}
+                className="register-box"
             >
                 <h2>New to SustainaByte?</h2>
                 <Button
@@ -101,10 +102,22 @@ const Homepage = () => {
                 display: "flex",
                 color: `${theme.palette.text.primary}`,
             }}
+            className="homepage-container"
         >
-            <LeftFeed />
-            <PostsFeed />
-            <RegisterFeed />
+            {window.innerWidth > 767 ? (
+                <>
+                    <LeftFeed />
+                    <PostsFeed />
+                    <RegisterFeed />
+                </>
+            ):
+                <>
+                    <LeftFeed />
+                    <RegisterFeed />
+                    <PostsFeed />
+                </>
+            }
+
         </Container>
     )
 }
