@@ -73,6 +73,9 @@ const getDesignTokens = (mode: PaletteMode) => ({
                     dark: '#388e3c', // A darker shade of green (success)
                     contrastText: contrastText,
                 },
+                variants: {
+
+                }
             }),
     },
 });
