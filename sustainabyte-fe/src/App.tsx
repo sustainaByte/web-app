@@ -8,6 +8,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {PaletteMode, useMediaQuery} from "@mui/material";
 import getDesignTokens from "./Components/PageLayout/theme";
 import RegisterPage from "./Components/Register/register";
+import SettingsPage from "./Components/Settings/settings";
 
 export const ColorModeContext = React.createContext({
     toggleColorMode: () => {
@@ -40,6 +41,7 @@ function App() {
                     </Route>
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterPage/>}/>
+                    <Route path="settings" element={<SettingsPage/>}/>
                 </Routes>
             </ThemeProvider>
         </ColorModeContext.Provider>
