@@ -9,6 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import HomepagePost from "../Posts/HomepagePost/homepagePost";
 import {Post} from "../Posts/posts";
 import {useNavigate} from "react-router-dom";
+import SimplePopup from '../Posts/PopupCreatePost/popupCreatePost';
 
 const PostsFeed = () => {
     // @ts-ignore
@@ -80,6 +81,7 @@ const LeftFeed = () => {
                 width: "20%"
             }}
         >
+            <SimplePopup></SimplePopup>
             <Button
                 sx={{
                     color: "inherit"
