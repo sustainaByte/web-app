@@ -76,7 +76,7 @@ export default function SimplePopup() {
                 <CloseIcon />
               </IconButton>
               <DialogContent sx={{ backgroundColor: theme.palette.background.default }} dividers>
-                <CreatePost />
+                <CreatePost handleClose={handleClose}/>
               </DialogContent>
 
             </BootstrapDialog>
