@@ -8,9 +8,6 @@ const useFetchPosts = () => {
         fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts',
             {
                 method: "get",
-                headers: new Headers({
-                    "ngrok-skip-browser-warning": "69420",
-                }),
             })
             .then(response => {
                 if (response.ok) {
@@ -24,8 +21,9 @@ const useFetchPosts = () => {
             .catch(err => setErr(err))
     }, [])
 
-    if (err)
+    if (err) {
         return err
+    }
 
     return posts
 }
