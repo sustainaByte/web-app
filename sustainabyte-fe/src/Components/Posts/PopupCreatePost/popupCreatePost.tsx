@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import { styled } from '@mui/system';
 import CreatePost from '../CreatePost/createPost';
-import { Box, Dialog, DialogContent, DialogTitle, IconButton, Button as MuiButton, Fab } from '@mui/material';
+import {Box, Dialog, DialogContent, DialogTitle, IconButton, Button as MuiButton, Fab, useTheme} from '@mui/material';
 
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
+import {useAuth} from "../../Login/login";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -17,7 +18,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function SimplePopup() {
-  const [opened, setOpened] = React.useState(false);
+    // @ts-ignore
+    const {authKey} = useAuth();
+    const [opened, setOpened] = React.useState(false);
+    const theme = useTheme();
 
   const handleClickOpen = () => {
     setOpened(true);
@@ -26,6 +30,10 @@ export default function SimplePopup() {
   const handleClose = () => {
     setOpened(false);
   };
+
+  if (!authKey) {
+      return <></>
+  }
 
   return (
     <Box
@@ -37,13 +45,12 @@ export default function SimplePopup() {
         color: 'white',
         borderRadius: 1,
         boxShadow: 2,
-        backgroundColor: 'transparent',
         '& p': {
           margin: 0,
         },
       }}
     >
-      <Fab aria-describedby="simple-popper" type="button" onClick={handleClickOpen} color="secondary" aria-label="edit">
+      <Fab aria-describedby="simple-popper" type="button" onClick={handleClickOpen} color="primary" aria-label="edit">
         <EditIcon />
       </Fab>
       <BasePopup id="simple-popper" open={opened} anchor={null}>
@@ -53,7 +60,7 @@ export default function SimplePopup() {
               Open dialog
             </MuiButton>
             <BootstrapDialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={opened}>
-              <DialogTitle sx={{ m: 0, p: 2, color: '#027d51', fontSize: '2rem' }} id="customized-dialog-title">
+              <DialogTitle sx={{ backgroundColor: theme.palette.background.default, m: 0, p: 2, color: '#027d51', fontSize: '2rem' }} id="customized-dialog-title">
                 Create a post
               </DialogTitle>
               <IconButton
@@ -68,7 +75,7 @@ export default function SimplePopup() {
               >
                 <CloseIcon />
               </IconButton>
-              <DialogContent dividers>
+              <DialogContent sx={{ backgroundColor: theme.palette.background.default }} dividers>
                 <CreatePost />
               </DialogContent>
 
@@ -86,13 +93,7 @@ const PopupBody = styled('div')(({ theme }) => `
   margin: 8px;
   border-radius: 8px;
   border: 1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[200]};
-  background-color: ${theme.palette.mode === 'dark' ? theme.palette.grey[900] : '#fff'};
-  box-shadow: ${
-    theme.palette.mode === 'dark'
-      ? `0px 4px 8px rgb(0 0 0 / 0.7)`
-      : `0px 4px 8px rgb(0 0 0 / 0.1)`
-  };
-  font-family: 'IBM Plex Sans', sans-serif;
+  background-color: ${theme.palette.background.default};
   font-size: 0.875rem;
   z-index: 1;
 `);
