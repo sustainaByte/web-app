@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -27,11 +27,37 @@ const HomepagePost = (post: Post) => {
 
     const theme = useTheme();
 
+    const [isXsScreen, setIsXsScreen] = useState(true);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsXsScreen(window.innerWidth > 765);
+      };
+  
+      // Initial check
+      handleResize();
+  
+      // Listen for window resize events
+      window.addEventListener('resize', handleResize);
+  
+      // Clean up the event listener on component unmount
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+
     return (
         <Card
             component="div"
             sx={{
-                maxWidth: 600,
+                maxWidth: {
+                  xs:"100%", // 0+ pixels
+                  sm:"80%", //600+ pixels
+                  md:"80%", //900+ pixels
+                  lg:"80%", //1200+ pixels
+                  xl:"80%", //1546+ pixels
+                  
+                },
                 borderRadius: "1rem" ,
                 padding: "1rem",
                 backgroundColor: "#000000"
@@ -40,8 +66,18 @@ const HomepagePost = (post: Post) => {
           <Container>
 
             <CardHeader
+              sx={{
+                maxWidth: {
+                  xs:"12%", // 0+ pixels
+                  sm:"10%", //600+ pixels
+                  md:"80%", //900+ pixels
+                  lg:"80%", //1200+ pixels
+                  xl:"80%", //1546+ pixels
+                },
+              }}
               avatar={
-                <Avatar sx={{ bgcolor: green[700] }} aria-label="recipe">
+                <Avatar sx={{                 
+                 bgcolor: green[700] }} aria-label="recipe">
                   R {/* here goes the initial of the user */}
                 </Avatar>
               }
@@ -54,7 +90,10 @@ const HomepagePost = (post: Post) => {
 
             />
 
+            { 
+            isXsScreen &&
             <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl}/>
+            }
             <CardContent>
                 <Typography
                     sx={{
