@@ -20,6 +20,7 @@ import ParkIcon from '@mui/icons-material/Park';
 import EventIcon from '@mui/icons-material/Event';
 import Container from "@mui/material/Container";
 import {useEffect, useState} from "react";
+import PaypalDonate from "../Paypal/paypalDonations";
 
 const AccountInformation = () => {
     const theme = useTheme()
