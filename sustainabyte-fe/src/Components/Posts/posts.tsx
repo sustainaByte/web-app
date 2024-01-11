@@ -2,7 +2,7 @@ export interface Post {
         "title": string,
         "content": string,
         "creatorId": string,
-        "kudos": number,
+        "kudos": string[],
         "mediaUrl": { type: string; data: number[]; }[]
         "createdAt"?: string,
         "updatedAt"?: string,

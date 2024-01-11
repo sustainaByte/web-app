@@ -16,10 +16,43 @@ import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlin
 
 import CommentBox from '../Comment/comment';
 import CustomSlideshow from '../Slideshow/slideshow';
+import {addKudos} from "../postsHelper";
+import {useAuth} from "../../Login/login";
 
 
 const HomepagePost = (post: Post) => {
+    // @ts-ignore
+    const {authKey} = useAuth()
     const [areCommentsVisible, setAreCommentsVisible] = useState(false);
+
+    useEffect(() => {
+
+    }, [])
+
+    // @ts-ignore
+    const [kudosCount, setKudosCount] = useState(post.kudos.length)
+    // TODO figure out way to pass user as prop to modify icon if the user hasnt liked
+    const handleKudos = ()  => {
+        addKudos(authKey, post._id)
+            .then(async (post: any) => {
+                const user = await fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/users/current',
+                    {
+                        method: "GET",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authKey.data.jwtToken}`,
+                        }
+                    })
+                    .then(response => response.json())
+
+                // @ts-ignore
+                if (!post.data.kudos.includes(user.data._id)) {
+                    setKudosCount(kudosCount - 1)
+                } else {
+                    setKudosCount(kudosCount + 1)
+                }
+            })
+    }
 
     const handleCommentClick = () => {
         setAreCommentsVisible(!areCommentsVisible);
@@ -110,12 +143,13 @@ const HomepagePost = (post: Post) => {
             <Box sx={{ marginTop:'-15px', }}>
                 <Button
                 sx={{ color: `${theme.palette.text.primary}` }}
+                onClick={handleKudos}
               >
                 <Badge color="error">
                   <ParkIcon />
                 </Badge>
                 <Typography sx={{ marginLeft: '4px', marginTop: '5px', color: `${theme.palette.text.secondary}` }} variant="body2">
-                  {post.kudos} Likes
+                  {kudosCount <= 1? `${kudosCount} Like`: `${kudosCount} Likes`}
                 </Typography>
               </Button>
               

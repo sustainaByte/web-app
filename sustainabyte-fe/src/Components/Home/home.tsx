@@ -32,7 +32,9 @@ const PostsFeed = () => {
                 content={post.content}
                 creatorId={post.creatorId}
                 title={post.title}
-                mediaUrl={post.mediaUrl} />)}
+                mediaUrl={post.mediaUrl}
+                _id={post._id}
+            />)}
         </Box>
     )
 }

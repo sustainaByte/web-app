@@ -23,6 +23,8 @@ import {useEffect, useState} from "react";
 import PaypalDonate from "../Paypal/paypalDonations";
 
 const AccountInformation = () => {
+    // @ts-ignore
+    const {authKey} = useAuth()
     const theme = useTheme()
     const [user, setUser] = useState([])
     const [err, setErr] = useState([])
@@ -30,18 +32,14 @@ const AccountInformation = () => {
     useEffect(() => {
         fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/users/current',
             {
-                method: "get",
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                }
-                else {
-                    return {'err': 'There was a problem loading posts!'}
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authKey.data.jwtToken}`,
                 }
             })
+            .then(response => response.json())
             .then(data => setUser(data))
-            .catch(err => setErr(err))
     }, [])
 
     if (err) {

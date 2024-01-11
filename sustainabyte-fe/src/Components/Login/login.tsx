@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }: any) => {
             authKey,
             login,
             logout,
-            register
+            register,
         }),
         [authKey]
     )
