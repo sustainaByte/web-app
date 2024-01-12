@@ -34,7 +34,7 @@ const HomepagePost = (props: {post: Post, user: any}) => {
 
     useEffect(() => {
         setUserLiked(props?.post.kudos.includes(props?.user?._id))
-    }, [post]);
+    }, [post, props?.user]);
 
     const handleKudos = ()  => {
         if (props?.user) {
