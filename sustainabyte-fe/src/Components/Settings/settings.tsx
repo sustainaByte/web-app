@@ -21,26 +21,15 @@ import EventIcon from '@mui/icons-material/Event';
 import Container from "@mui/material/Container";
 import {useEffect, useState} from "react";
 import PaypalDonate from "../Paypal/paypalDonations";
+import useFetchUser from "../Login/useFetchUser";
 
 const AccountInformation = () => {
     // @ts-ignore
     const {authKey} = useAuth()
     const theme = useTheme()
-    const [user, setUser] = useState([])
     const [err, setErr] = useState([])
-
-    useEffect(() => {
-        fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/users/current',
-            {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authKey.data.jwtToken}`,
-                }
-            })
-            .then(response => response.json())
-            .then(data => setUser(data))
-    }, [])
+    // @ts-ignore
+    const user = useFetchUser(authKey.data.jwtToken)['data']
 
     if (err) {
         return (

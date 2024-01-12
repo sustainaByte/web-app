@@ -12,46 +12,39 @@ import Container from '@mui/material/Container';
 import {Badge, Box, useTheme} from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ParkIcon from '@mui/icons-material/Park';
+import ParkOutlinedIcon from '@mui/icons-material/ParkOutlined';
 import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
 
 import CommentBox from '../Comment/comment';
 import CustomSlideshow from '../Slideshow/slideshow';
 import {addKudos} from "../postsHelper";
 import {useAuth} from "../../Login/login";
+import {useNavigate} from "react-router-dom";
+import useFetchUser from "../../Login/useFetchUser";
 
 
-const HomepagePost = (post: Post) => {
+const HomepagePost = (props: {post: Post, user: any}) => {
     // @ts-ignore
     const {authKey} = useAuth()
     const [areCommentsVisible, setAreCommentsVisible] = useState(false);
-
-    useEffect(() => {
-
-    }, [])
-
-    // @ts-ignore
+    const post = props.post
     const [kudosCount, setKudosCount] = useState(post.kudos.length)
-    // TODO figure out way to pass user as prop to modify icon if the user hasnt liked
-    const handleKudos = ()  => {
-        addKudos(authKey, post._id)
-            .then(async (post: any) => {
-                const user = await fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/users/current',
-                    {
-                        method: "GET",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${authKey.data.jwtToken}`,
-                        }
-                    })
-                    .then(response => response.json())
+    const navigate = useNavigate()
+    const [userLiked, setUserLiked] = useState(
+        props.user ? props.post.kudos.includes(props.user._id): null)
 
-                // @ts-ignore
-                if (!post.data.kudos.includes(user.data._id)) {
-                    setKudosCount(kudosCount - 1)
-                } else {
-                    setKudosCount(kudosCount + 1)
-                }
-            })
+    const handleKudos = ()  => {
+        if (props.user) {
+            addKudos(authKey, post._id)
+            if (userLiked) {
+                setKudosCount(kudosCount - 1)
+            } else {
+                setKudosCount(kudosCount + 1)
+            }
+            setUserLiked(!userLiked)
+        } else {
+           navigate("/register")
+        }
     }
 
     const handleCommentClick = () => {
@@ -66,13 +59,13 @@ const HomepagePost = (post: Post) => {
       const handleResize = () => {
         setIsXsScreen(window.innerWidth > 765);
       };
-  
+
       // Initial check
       handleResize();
-  
+
       // Listen for window resize events
       window.addEventListener('resize', handleResize);
-  
+
       // Clean up the event listener on component unmount
       return () => {
         window.removeEventListener('resize', handleResize);
@@ -89,7 +82,7 @@ const HomepagePost = (post: Post) => {
                   md:"80%", //900+ pixels
                   lg:"80%", //1200+ pixels
                   xl:"80%", //1546+ pixels
-                  
+
                 },
                 borderRadius: "1rem" ,
                 padding: "1rem",
@@ -109,7 +102,7 @@ const HomepagePost = (post: Post) => {
                 },
               }}
               avatar={
-                <Avatar sx={{                 
+                <Avatar sx={{
                  bgcolor: green[700] }} aria-label="recipe">
                   R {/* here goes the initial of the user */}
                 </Avatar>
@@ -123,7 +116,7 @@ const HomepagePost = (post: Post) => {
 
             />
 
-            { 
+            {
             isXsScreen &&
             <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl}/>
             }
@@ -139,24 +132,24 @@ const HomepagePost = (post: Post) => {
                     {post.content}
                 </Typography>
             </CardContent>
-            
+
             <Box sx={{ marginTop:'-15px', }}>
                 <Button
                 sx={{ color: `${theme.palette.text.primary}` }}
                 onClick={handleKudos}
               >
                 <Badge color="error">
-                  <ParkIcon />
+                    {userLiked ? <ParkIcon />: <ParkOutlinedIcon />}
                 </Badge>
                 <Typography sx={{ marginLeft: '4px', marginTop: '5px', color: `${theme.palette.text.secondary}` }} variant="body2">
                   {kudosCount <= 1? `${kudosCount} Like`: `${kudosCount} Likes`}
                 </Typography>
               </Button>
-              
+
               <Button sx={{ color: `${theme.palette.text.primary}` }}>
                  <ShareIcon />
               </Button>
-              
+
               <Button sx={{ float:'right' }} onClick={handleCommentClick}>
                  <Badge badgeContent={10000} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
                     <QuestionAnswerOutlinedIcon style={{fill: `${theme.palette.text.primary}`}} />
@@ -168,7 +161,7 @@ const HomepagePost = (post: Post) => {
                 <CommentBox></CommentBox>
               )}
 
-             
+
             </Box>
           </Container>
         </Card>
