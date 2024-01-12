@@ -36,14 +36,12 @@ function App() {
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
                 <Routes>
-                    <Route path="/web-app">
-                        <Route element={<PageLayout/>}>
-                            <Route index element={<Homepage/>}/>
-                        </Route>
-                        <Route path="login" element={<LoginPage/>}/>
-                        <Route path="register" element={<RegisterPage/>}/>
-                        <Route path="settings" element={<SettingsPage/>}/>
+                    <Route element={<PageLayout/>}>
+                        <Route index element={<Homepage/>}/>
                     </Route>
+                    <Route path="login" element={<LoginPage/>}/>
+                    <Route path="register" element={<RegisterPage/>}/>
+                    <Route path="settings" element={<SettingsPage/>}/>
                 </Routes>
             </ThemeProvider>
         </ColorModeContext.Provider>

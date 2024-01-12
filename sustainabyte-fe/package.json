@@ -1,6 +1,6 @@
 {
   "name": "sustainabyte-fe",
-  "homepage": "https://sustainaByte.github.io/#/web-app/",
+  "homepage": "https://sustainaByte.github.io/web-app/#",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
