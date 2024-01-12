@@ -30,11 +30,14 @@ const HomepagePost = (props: {post: Post, user: any}) => {
     const post = props.post
     const [kudosCount, setKudosCount] = useState(post.kudos.length)
     const navigate = useNavigate()
-    const [userLiked, setUserLiked] = useState(
-        props.user ? props.post.kudos.includes(props.user._id): null)
+    const [userLiked, setUserLiked] = useState(false)
+
+    useEffect(() => {
+        setUserLiked(props?.post.kudos.includes(props?.user?._id))
+    }, [post]);
 
     const handleKudos = ()  => {
-        if (props.user) {
+        if (props?.user) {
             addKudos(authKey, post._id)
             if (userLiked) {
                 setKudosCount(kudosCount - 1)
