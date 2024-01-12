@@ -10,6 +10,8 @@ import HomepagePost from "../Posts/HomepagePost/homepagePost";
 import {Post} from "../Posts/posts";
 import {useNavigate} from "react-router-dom";
 import SimplePopup from '../Posts/PopupCreatePost/popupCreatePost';
+import {createOrder} from "../Paypal/paypalHelper";
+import PaypalDonate from "../Paypal/paypalDonations";
 
 const PostsFeed = () => {
     // @ts-ignore
@@ -101,7 +103,6 @@ const LeftFeed = () => {
 
 const Homepage = () => {
     const theme = useTheme()
-
     return (
         <Container
             component="div"

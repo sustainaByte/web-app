@@ -46,12 +46,17 @@ const fetchCreatePost = async (token: any, post: Post) => {
 }
 
 
-const CreatePost = () => {
+// @ts-ignore
+function CreatePost ({handleClose}) {
     // @ts-ignore
     const {authKey} = useAuth()
     const theme = useTheme();
     const [title, setTitle] = useState("")
     const [message, setMessage] = useState("")
+
+    const handlePost = () => {
+        handleClose();
+    }
 
     const handleTitleChange = (event: any) => {
         setTitle(event.target.value);
@@ -98,16 +103,19 @@ const CreatePost = () => {
                 </Button>
 
                 <Button
-                    onClick={() =>
-                        fetchCreatePost(authKey,
-                            {
-                                "title": title,
-                                "content": message,
-                                "mediaUrl": [],
-                                "creatorId": "",
-                                "kudos": 0
+                    onClick={() => {
+                            fetchCreatePost(authKey,
+                                {
+                                    "title": title,
+                                    "content": message,
+                                    "mediaUrl": [],
+                                    "creatorId": "",
+                                    "kudos": 0
                                 }
-                            )}
+                            );
+                            handlePost();
+                        }
+                    }
                     sx={{ float:'right' }}
                     component="label"
                     variant="outlined">
