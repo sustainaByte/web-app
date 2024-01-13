@@ -12,10 +12,16 @@ import {useNavigate} from "react-router-dom";
 import SimplePopup from '../Posts/PopupCreatePost/popupCreatePost';
 import {createOrder} from "../Paypal/paypalHelper";
 import PaypalDonate from "../Paypal/paypalDonations";
+import useFetchUser from "../Login/useFetchUser";
 
 const PostsFeed = () => {
     // @ts-ignore
+    const {authKey} = useAuth()
+    // @ts-ignore
     const posts = useFetchPosts()['data']
+    // @ts-ignore
+    const userFetch = useFetchUser(authKey?.data?.jwtToken)['data']
+    const user = userFetch ? userFetch: null
 
     return (
         <Box
@@ -28,11 +34,10 @@ const PostsFeed = () => {
             }}
         >
             {posts?.map((post: Post) => <HomepagePost
-                kudos={post.kudos}
-                content={post.content}
-                creatorId={post.creatorId}
-                title={post.title}
-                mediaUrl={post.mediaUrl} />)}
+                post={post}
+                user={user}
+                key={post._id}
+            />)}
         </Box>
     )
 }

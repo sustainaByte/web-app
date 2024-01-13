@@ -7,7 +7,7 @@ const useFetchPosts = () => {
     useEffect(() => {
         fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts',
             {
-                method: "get",
+                method: "GET",
             })
             .then(response => {
                 if (response.ok) {
@@ -17,8 +17,8 @@ const useFetchPosts = () => {
                     return {'err': 'There was a problem loading posts!'}
                 }
             })
-            .then(data => setPosts(data))
-            .catch(err => setErr(err))
+                .then(data => setPosts(data))
+                .catch(err => setErr(err))
     }, [])
 
     if (err) {

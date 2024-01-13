@@ -110,7 +110,7 @@ function CreatePost ({handleClose}) {
                                     "content": message,
                                     "mediaUrl": [],
                                     "creatorId": "",
-                                    "kudos": 0
+                                    "kudos": []
                                 }
                             );
                             handlePost();
