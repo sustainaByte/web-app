@@ -9,7 +9,7 @@ import {
     Button,
     useTheme,
     Input,
-    Typography
+    Typography, capitalize
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import {useAuth} from "../Login/login";
@@ -24,6 +24,28 @@ import PaypalDonate from "../Paypal/paypalDonations";
 import useFetchUser from "../Login/useFetchUser";
 import Avatar from "@mui/material/Avatar";
 
+const UserRole = (props: {roleName: string}) => {
+    let splitName = props.roleName.split("_");
+    splitName = splitName.map(name => name.charAt(0).toUpperCase() + name.slice(1));
+    const theme = useTheme()
+
+    return (
+        <Box component={'div'} sx={{
+            width: '150px',
+            height: '50px',
+            borderRadius: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            backgroundColor: `${theme.palette.text.disabled}`
+        }}>
+            <Typography color={`${theme.palette.text.primary}`}>{
+                splitName.join(" ")
+            }</Typography>
+        </Box>
+    )
+}
 
 const AccountInformation = () => {
     // @ts-ignore
@@ -35,7 +57,7 @@ const AccountInformation = () => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [roles, setRoles] = useState('');
+    const [roles, setRoles] = useState([]);
     const [image, setImage] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
@@ -49,7 +71,7 @@ const AccountInformation = () => {
             setName(user.name);
             setSurname(user.surname);
             setPhoneNumber(user.phoneNumber);
-            setRoles(user.roles.join(', ')); // Assuming roles is an array
+            setRoles(user.roles);
             setImage(user.image);
             setCity(user.address.city);
             setCountry(user.address.country);
@@ -192,7 +214,7 @@ const AccountInformation = () => {
                         <Typography component="p" color="primary">
                             Roles
                         </Typography>
-                        {roles}
+                        {roles.map((role: any) => <UserRole roleName={role.name}/>)}
                     </Box>
                     <Box component={'div'} sx={{
                         display: 'flex',
@@ -219,13 +241,13 @@ const AccountInformation = () => {
                     }}>
                         <Box component={'div'}>
                             <Typography component="p" color="primary">
-                                City
+                                Street
                             </Typography>
                             <Input value={street} onChange={handleStreetChange} />
                         </Box>
                         <Box component={'div'}>
                             <Typography component="p" color="primary">
-                                City
+                                Street Number
                             </Typography>
                             <Input value={streetNumber} onChange={handleStreetNumberChange} />
                         </Box>
