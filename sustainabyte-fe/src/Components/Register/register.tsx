@@ -156,10 +156,10 @@ const RegisterForm = () => {
                         />
                         <TextField
                             margin="normal"
-                            id="street"
-                            label="Street"
-                            name="street"
-                            autoComplete="street"
+                            id="country"
+                            label="Country"
+                            name="country"
+                            autoComplete="country"
                             autoFocus
                             color="primary"
                             variant="standard"
