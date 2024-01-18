@@ -22,7 +22,7 @@ import { Post } from '../Posts/posts';
 import { addKudos } from '../Posts/postsHelper';
 
 
-const CurrentPost = (props: {post: Post, user: any}) => {
+const CurrentPost = (props: {post: any, user: any}) => {
     // @ts-ignore
     const {authKey} = useAuth()
     const [areCommentsVisible, setAreCommentsVisible] = useState(false);

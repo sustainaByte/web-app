@@ -44,7 +44,7 @@ function App() {
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterPage/>}/>
                     <Route path="settings" element={<SettingsPage/>}/>
-                    <Route path="profile" element={<ProfilePage/>}/>
+                    <Route path="profile" element={<ProfilePage/>}/>z
                     <Route element={<PageLayout/>}>
                         <Route path="post" element={<PostPage/>}/>
                     </Route>

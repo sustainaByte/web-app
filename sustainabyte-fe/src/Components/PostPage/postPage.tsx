@@ -8,7 +8,7 @@ import useFetchPosts from "../Posts/useFetchPosts";
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomepagePost from "../Posts/HomepagePost/homepagePost";
 import {Post} from "../Posts/posts";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import SimplePopup from '../Posts/PopupCreatePost/popupCreatePost';
 import {createOrder} from "../Paypal/paypalHelper";
 import PaypalDonate from "../Paypal/paypalDonations";
@@ -18,14 +18,34 @@ import CommentBox from '../Posts/Comment/comment';
 import CommentBoxSinglePost from './commentBoxSinglePost';
 import LikeSinglePost from './LikeSinglePost';
 
+const fetchPost = (token: any, post_id_string: any) => {
+
+     fetch(`https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts/${post_id_string}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token.data.jwtToken}`,
+          }
+      })
+          .then(response => {
+              if (response.ok) {
+                  return response.json()
+              }
+              else {
+                  return {'err': 'There was a problem getting the post!'}
+              }
+          })
+  }
+  
 const PostsFeed = () => {
     // @ts-ignore
     const {authKey} = useAuth()
     // @ts-ignore
-    const posts = useFetchPosts()['data']
-    // @ts-ignore
     const userFetch = useFetchUser(authKey?.data?.jwtToken)['data']
     const user = userFetch ? userFetch: null
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const fetchedPost = fetchPost(authKey, searchParams.get("post_id"));
 
     return (
         <Box
@@ -37,13 +57,11 @@ const PostsFeed = () => {
                 gap: '20px'
             }}
         >
-            {posts && posts.length > 1 && (
-                <CurrentPost
-                    post={posts[1]}
+            <CurrentPost
+                    post={fetchedPost}
                     user={user}
-                    key={posts[1]._id}
-                />
-            )}
+            />
+            
         </Box>
     )
 }
