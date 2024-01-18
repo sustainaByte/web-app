@@ -6,6 +6,7 @@ import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import {useAuth} from "../../Login/login";
 import {Post} from "../posts";
 import {useState} from "react";
+import Avatar from "@mui/material/Avatar";
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -21,19 +22,23 @@ const VisuallyHiddenInput = styled('input')({
   });
 
 const fetchCreatePost = async (token: any, post: Post) => {
+    const formData = new FormData();
+
+    formData.append('title', post.title);
+    formData.append('content', post.content);
+    formData.append('creatorId', post.creatorId);
+    formData.append('kudos', JSON.stringify(post.kudos));
+    if (post.mediaFile) {
+        formData.append('media', post.mediaFile);
+    }
+
     await fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token.data.jwtToken}`,
         },
-        body: JSON.stringify({
-            "title": post.title,
-            "content": post.content,
-            "creatorId": post.creatorId,
-            "kudos": post.kudos,
-            "mediaUrl": post.mediaUrl
-        })
+        body: formData
     })
         .then(response => {
             if (response.ok) {
@@ -53,6 +58,7 @@ function CreatePost ({handleClose}) {
     const theme = useTheme();
     const [title, setTitle] = useState("")
     const [message, setMessage] = useState("")
+    const [image, setImage] = useState(null)
 
     const handlePost = () => {
         handleClose();
@@ -65,6 +71,10 @@ function CreatePost ({handleClose}) {
     const handleMessageChange = (event: any) => {
         setMessage(event.target.value);
     };
+
+    const handleFileChange = (event: any) => {
+        setImage(event.target.files[0])
+    }
 
     return (
     <Card 
@@ -91,16 +101,25 @@ function CreatePost ({handleClose}) {
                 <TextField onChange={handleMessageChange} id="outlined-basic" label="Write your message" variant="outlined"  multiline rows={3} sx={{ width:"100%", margin: '8px' }} />
             </FormControl>
 
-            <Box>
+            <Box component={"div"}>
                 <Button component="label" variant="outlined">
                     <Badge>
                         <ImageIcon />
                     </Badge>
                     <Typography sx={{ marginLeft: '4px', marginTop: '5px'}} variant="body2">
-                        upload images
+                        upload image
                     </Typography>
+                    <input type="file" onChange={handleFileChange} accept="image/*" style={{
+                        display: "none"
+                    }} />
                     <VisuallyHiddenInput type="image" />
                 </Button>
+                {image && (
+                    <Avatar src={URL.createObjectURL(image)} sx={{
+                        width: '200px',
+                        height: '200px'
+                    }}/>
+                )}
 
                 <Button
                     onClick={() => {
@@ -110,7 +129,8 @@ function CreatePost ({handleClose}) {
                                     "content": message,
                                     "mediaUrl": [],
                                     "creatorId": "",
-                                    "kudos": []
+                                    "kudos": [],
+                                    "mediaFile": image
                                 }
                             );
                             handlePost();
