@@ -29,13 +29,12 @@ const fetchCreatePost = async (token: any, post: Post) => {
     formData.append('creatorId', post.creatorId);
     formData.append('kudos', JSON.stringify(post.kudos));
     if (post.mediaFile) {
-        formData.append('media', post.mediaFile);
+        formData.append('file', post.mediaFile);
     }
 
-    await fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts', {
+    fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token.data.jwtToken}`,
         },
         body: formData
@@ -101,33 +100,31 @@ function CreatePost ({handleClose}) {
                 <TextField onChange={handleMessageChange} id="outlined-basic" label="Write your message" variant="outlined"  multiline rows={3} sx={{ width:"100%", margin: '8px' }} />
             </FormControl>
 
-            <Box component={"div"}>
-                <Button component="label" variant="outlined">
-                    <Badge>
-                        <ImageIcon />
-                    </Badge>
-                    <Typography sx={{ marginLeft: '4px', marginTop: '5px'}} variant="body2">
-                        upload image
-                    </Typography>
-                    <input type="file" onChange={handleFileChange} accept="image/*" style={{
-                        display: "none"
-                    }} />
-                    <VisuallyHiddenInput type="image" />
-                </Button>
-                {image && (
-                    <Avatar src={URL.createObjectURL(image)} sx={{
-                        width: '200px',
-                        height: '200px'
-                    }}/>
-                )}
-
-                <Button
-                    onClick={() => {
+            <Box component={"div"} sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px'
+            }}>
+                <Box component={"div"}>
+                    <Button component="label" variant="outlined">
+                        <Badge>
+                            <ImageIcon />
+                        </Badge>
+                        <Typography sx={{ marginLeft: '4px', marginTop: '5px'}} variant="body2">
+                            upload image
+                        </Typography>
+                        <input type="file" onChange={handleFileChange} accept="image/*" style={{
+                            display: "none"
+                        }} />
+                        <VisuallyHiddenInput type="image" />
+                    </Button>
+                    <Button
+                        onClick={() => {
                             fetchCreatePost(authKey,
                                 {
                                     "title": title,
                                     "content": message,
-                                    "mediaUrl": [],
+                                    "mediaUrl": image ? URL.createObjectURL(image): '',
                                     "creatorId": "",
                                     "kudos": [],
                                     "mediaFile": image
@@ -135,17 +132,25 @@ function CreatePost ({handleClose}) {
                             );
                             handlePost();
                         }
-                    }
-                    sx={{ float:'right' }}
-                    component="label"
-                    variant="outlined">
-                    <Typography sx={{ marginRight: '6px', marginTop: '5px'}} variant="body2">
-                        Post
-                    </Typography>
-                    <Badge>
-                        <SendRoundedIcon />
-                    </Badge>
-                </Button>
+                        }
+                        sx={{ float:'right' }}
+                        component="label"
+                        variant="outlined">
+                        <Typography sx={{ marginRight: '6px', marginTop: '5px'}} variant="body2">
+                            Post
+                        </Typography>
+                        <Badge>
+                            <SendRoundedIcon />
+                        </Badge>
+                    </Button>
+                </Box>
+                {image && (
+                    <Box component={'img'} src={URL.createObjectURL(image)} sx={{
+                        width: 'max-content',
+                        height: '200px',
+                        margin: '0 auto'
+                    }}/>
+                )}
             </Box>
         </Container>
     </Card>
