@@ -1,0 +1,20 @@
+body {
+    background-color: rgb(32, 33, 36);
+    margin: 0;
+  }
+
+.homepage-container {
+    @media (max-width: 767px) {
+      flex-direction: column;
+  
+      div {
+        width: 95%;
+      }
+    }
+  }
+  
+  .register-box {
+    @media (max-width: 767px) {
+      margin: 10px 0;
+    }
+  }
