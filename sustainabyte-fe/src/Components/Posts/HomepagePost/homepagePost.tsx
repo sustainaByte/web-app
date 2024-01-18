@@ -122,18 +122,11 @@ const HomepagePost = (props: {post: Post, user: any}) => {
                   xl:"80%", //1546+ pixels
                 },
               }}
-              avatar={
-                <Avatar sx={{
-                 bgcolor: green[700] }} aria-label="recipe">
-                  R {/* here goes the initial of the user */}
-                </Avatar>
-              }
               action={
                 <IconButton aria-label="settings">
                 </IconButton>
               }
               title={post.title}
-              subheader={post._id}
 
             />
 
