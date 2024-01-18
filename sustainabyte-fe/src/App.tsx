@@ -38,7 +38,7 @@ function App() {
             <ThemeProvider theme={theme}>
                 <Routes>
                     <Route element={<PageLayout/>}>
-                        <Route path="/" element={<Homepage/>}/>
+                        <Route index element={<Homepage/>}/>
                     </Route>
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterPage/>}/>
