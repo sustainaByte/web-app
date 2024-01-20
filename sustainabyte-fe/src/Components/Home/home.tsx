@@ -71,7 +71,7 @@ const RightFeed = () => {
             <Box
                 component="div"
                 sx={{
-                    width: "20%",
+                    width: "100%",
                     borderRadius: '1rem',
                     backgroundColor: 'black',
                     p: 1,
