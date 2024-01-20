@@ -12,25 +12,21 @@ import {Badge, Box, useTheme} from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import ParkIcon from '@mui/icons-material/Park';
 import ParkOutlinedIcon from '@mui/icons-material/ParkOutlined';
-import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
-
 import {useAuth} from "../Login/login";
 import {useNavigate} from "react-router-dom";
-import useFetchUser from "../Login/useFetchUser";
 import CustomSlideshow from '../Posts/Slideshow/slideshow';
-import { Post } from '../Posts/posts';
 import { addKudos } from '../Posts/postsHelper';
 
 
 const CurrentPost = (props: {post: any, user: any}) => {
     // @ts-ignore
     const {authKey} = useAuth()
-    const [areCommentsVisible, setAreCommentsVisible] = useState(false);
     const post = props.post
     const [kudosCount, setKudosCount] = useState(post.kudos.length)
     const navigate = useNavigate()
     const [userLiked, setUserLiked] = useState(
         props.user ? props.post.kudos.includes(props.user._id): null)
+    const [imageUrl, setImageUrl] = useState('')
 
     const handleKudos = ()  => {
         if (props.user) {
@@ -45,10 +41,6 @@ const CurrentPost = (props: {post: any, user: any}) => {
            navigate("/register")
         }
     }
-
-    const handleCommentClick = () => {
-        setAreCommentsVisible(!areCommentsVisible);
-    };
 
     const theme = useTheme();
 
@@ -71,16 +63,34 @@ const CurrentPost = (props: {post: any, user: any}) => {
       };
     }, []);
 
+    useEffect(() => {
+        if (post._id) {
+            fetch(`https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts/${post._id}/photo`,
+                {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authKey}`,
+                    }
+                })
+                .then(async response => {
+                    if (response.ok) {
+                        setImageUrl(URL.createObjectURL(await response.blob()))
+                    }
+                })
+        }
+    }, []);
+
     return (
         <Card
             component="div"
             sx={{
                 maxWidth: {
-                  xs:"100%", // 0+ pixels
-                  sm:"80%", //600+ pixels
-                  md:"80%", //900+ pixels
-                  lg:"80%", //1200+ pixels
-                  xl:"80%", //1546+ pixels
+                    xs:"100%", // 0+ pixels
+                    sm:"80%", //600+ pixels
+                    md:"80%", //900+ pixels
+                    lg:"80%", //1200+ pixels
+                    xl:"80%", //1546+ pixels
 
                 },
                 borderRadius: "1rem" ,
@@ -88,69 +98,61 @@ const CurrentPost = (props: {post: any, user: any}) => {
                 backgroundColor: "#000000"
             }}
         >
-          <Container>
+            <Container>
 
-            <CardHeader
-              sx={{
-                maxWidth: {
-                  xs:"12%", // 0+ pixels
-                  sm:"10%", //600+ pixels
-                  md:"80%", //900+ pixels
-                  lg:"80%", //1200+ pixels
-                  xl:"80%", //1546+ pixels
-                },
-              }}
-              avatar={
-                <Avatar sx={{
-                 bgcolor: green[700] }} aria-label="recipe">
-                  R {/* here goes the initial of the user */}
-                </Avatar>
-              }
-              action={
-                <IconButton aria-label="settings">
-                </IconButton>
-              }
-              title={post.title}
-              subheader={post._id}
-
-            />
-
-            {
-            isXsScreen &&
-            <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl}/>
-            }
-            <CardContent>
-                <Typography
+                <CardHeader
                     sx={{
-                        overflow: "scroll",
-                        maxHeight: "100px",  }}
-                    variant="body2"
-                    color="text.secondary"
-                    fontSize= "18px"
-                >
-                    {post.content}
-                </Typography>
-            </CardContent>
+                        maxWidth: {
+                            xs:"12%", // 0+ pixels
+                            sm:"10%", //600+ pixels
+                            md:"80%", //900+ pixels
+                            lg:"80%", //1200+ pixels
+                            xl:"80%", //1546+ pixels
+                        },
+                    }}
+                    action={
+                        <IconButton aria-label="settings">
+                        </IconButton>
+                    }
+                    title={post.title}
 
-            <Box sx={{ marginTop:'-15px', }}>
-                <Button
-                sx={{ color: `${theme.palette.text.primary}` }}
-                onClick={handleKudos}
-              >
-                <Badge color="error">
-                    {userLiked ? <ParkIcon />: <ParkOutlinedIcon />}
-                </Badge>
-                <Typography sx={{ marginLeft: '4px', marginTop: '5px', color: `${theme.palette.text.secondary}` }} variant="body2">
-                  {kudosCount <= 1? `${kudosCount} Like`: `${kudosCount} Likes`}
-                </Typography>
-              </Button>
+                />
 
-              <Button sx={{ color: `${theme.palette.text.primary}` }}>
-                 <ShareIcon />
-              </Button>
+                {
+                    isXsScreen &&
+                    <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={imageUrl}/>
+                }
+                <CardContent>
+                    <Typography
+                        sx={{
+                            overflow: "scroll",
+                            maxHeight: "100px",  }}
+                        variant="body2"
+                        color="text.secondary"
+                        fontSize= "18px"
+                    >
+                        {post.content}
+                    </Typography>
+                </CardContent>
 
-            </Box>
-          </Container>
+                <Box sx={{ marginTop:'-15px', }}>
+                    <Button
+                        sx={{ color: `${theme.palette.text.primary}` }}
+                        onClick={handleKudos}
+                    >
+                        <Badge color="error">
+                            {userLiked ? <ParkIcon />: <ParkOutlinedIcon />}
+                        </Badge>
+                        <Typography sx={{ marginLeft: '4px', marginTop: '5px', color: `${theme.palette.text.secondary}` }} variant="body2">
+                            {kudosCount <= 1? `${kudosCount} Like`: `${kudosCount} Likes`}
+                        </Typography>
+                    </Button>
+
+                    <Button sx={{ color: `${theme.palette.text.primary}` }}>
+                        <ShareIcon />
+                    </Button>
+                </Box>
+            </Container>
         </Card>
       );
 }

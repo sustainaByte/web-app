@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button/Button';
 import {Badge, Box, useTheme} from '@mui/material';
@@ -15,15 +15,20 @@ import { addKudos } from '../Posts/postsHelper';
 const LikeSinglePost = (props: {post: Post, user: any}) => {
     // @ts-ignore
     const {authKey} = useAuth()
-    const post = props.post
-    const [kudosCount, setKudosCount] = useState(post.kudos.length)
+    const [kudosCount, setKudosCount] = useState(0)
     const navigate = useNavigate()
-    const [userLiked, setUserLiked] = useState(
-        props.user ? props.post.kudos.includes(props.user._id): null)
+    const [userLiked, setUserLiked] = useState(false)
+
+    useEffect(() => {
+        if (props.post) {
+            setKudosCount(props.post.kudos.length)
+            setUserLiked(props.post.kudos.includes(props.user._id))
+        }
+    }, [props.post]);
 
     const handleKudos = ()  => {
-        if (props.user) {
-            addKudos(authKey, post._id)
+        if (props.user && props.post) {
+            addKudos(authKey, props.post._id)
             if (userLiked) {
                 setKudosCount(kudosCount - 1)
             } else {
@@ -31,7 +36,7 @@ const LikeSinglePost = (props: {post: Post, user: any}) => {
             }
             setUserLiked(!userLiked)
         } else {
-           navigate("/register")
+           navigate("/#/register")
         }
     }
     const theme = useTheme();
@@ -53,8 +58,7 @@ const LikeSinglePost = (props: {post: Post, user: any}) => {
                         {userLiked ? <ParkIcon />: <ParkOutlinedIcon />}
                     </Badge>
                     <Typography sx={{ marginLeft: '4px', marginTop: '5px', color: `${theme.palette.text.secondary}` }} variant="body2">
-                    {kudosCount <= 1? `${kudosCount} Like`: `${kudosCount}`}
-                    &nbsp;LIKES
+                    {kudosCount <= 1? `${kudosCount} Like`: `${kudosCount} Likes`}
                     </Typography>
                 </Button>
                 <br/><br/>

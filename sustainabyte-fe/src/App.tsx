@@ -51,7 +51,7 @@ function App() {
                     <Route path="register" element={<RegisterPage/>}/>
                     <Route path="settings" element={<SettingsPage/>}/>
                     <Route path="profile" element={<ProfilePage/>}/>z
-                    <Route element={<PageLayout/>}>
+                    <Route element={<PageLayout onInputChange={onInputChange} title={title}/>}>
                         <Route path="post" element={<PostPage/>}/>
                     </Route>
                 </Routes>

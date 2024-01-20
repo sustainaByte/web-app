@@ -3,50 +3,14 @@ import Container from "@mui/material/Container";
 import {useAuth} from "../Login/login";
 import {useTheme} from "@mui/material";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import useFetchPosts from "../Posts/useFetchPosts";
-import SettingsIcon from '@mui/icons-material/Settings';
-import HomepagePost from "../Posts/HomepagePost/homepagePost";
-import {Post} from "../Posts/posts";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import SimplePopup from '../Posts/PopupCreatePost/popupCreatePost';
-import {createOrder} from "../Paypal/paypalHelper";
-import PaypalDonate from "../Paypal/paypalDonations";
+import {useSearchParams} from "react-router-dom";
 import useFetchUser from "../Login/useFetchUser";
 import CurrentPost from './currentPost';
-import CommentBox from '../Posts/Comment/comment';
 import CommentBoxSinglePost from './commentBoxSinglePost';
 import LikeSinglePost from './LikeSinglePost';
+import {useEffect, useState} from 'react';
 
-const fetchPost = (token: any, post_id_string: any) => {
-
-     fetch(`https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts/${post_id_string}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token.data.jwtToken}`,
-          }
-      })
-          .then(response => {
-              if (response.ok) {
-                  return response.json()
-              }
-              else {
-                  return {'err': 'There was a problem getting the post!'}
-              }
-          })
-  }
-  
-const PostsFeed = () => {
-    // @ts-ignore
-    const {authKey} = useAuth()
-    // @ts-ignore
-    const userFetch = useFetchUser(authKey?.data?.jwtToken)['data']
-    const user = userFetch ? userFetch: null
-
-    const [searchParams, setSearchParams] = useSearchParams();
-    const fetchedPost = fetchPost(authKey, searchParams.get("post_id"));
-
+const PostFeed = (props: {post: any, user: any}) => {
     return (
         <Box
             component="div"
@@ -57,24 +21,17 @@ const PostsFeed = () => {
                 gap: '20px'
             }}
         >
-            <CurrentPost
-                    post={fetchedPost}
-                    user={user}
-            />
-            
+            {props.post &&
+                <CurrentPost
+                    post={props.post}
+                    user={props.user}
+                />
+            }
         </Box>
     )
 }
 
 const CommentFeed = () => {
-    // @ts-ignore
-    const {authKey} = useAuth()
-    // @ts-ignore
-    const posts = useFetchPosts()['data']
-    // @ts-ignore
-    const userFetch = useFetchUser(authKey?.data?.jwtToken)['data']
-    const user = userFetch ? userFetch: null
-
     return (
         <Box
             component="div"
@@ -90,32 +47,41 @@ const CommentFeed = () => {
     )
 }
 
-const LeftFeed = () => {
+const PostPage = () => {
     // @ts-ignore
     const {authKey} = useAuth()
     // @ts-ignore
-    const posts = useFetchPosts()['data']
-    // @ts-ignore
     const userFetch = useFetchUser(authKey?.data?.jwtToken)['data']
-    const user = userFetch ? userFetch: null
-
-    return (
-        <Box
-            component="div"
-            sx={{
-                width: "20%"
-            }}
-        >
-            {posts && posts.length > 1 && (
-                <LikeSinglePost post={posts[1]} user={user}></LikeSinglePost>
-            )}
-
-        </Box>
-    )
-}
-
-const PostPage = () => {
+    const [user, setUser] = useState(null)
     const theme = useTheme()
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [post, setPost] = useState(null)
+
+    useEffect(() => {
+        fetch(`https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts/${searchParams.get("post_id")}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(async response => {
+            if (response.ok) {
+                setPost((await response.json()).data)
+            } else {
+                return {'err': 'There was a problem getting the post!'};
+            }
+        })
+    }, []);
+
+    useEffect(() => {
+        setUser(userFetch)
+    }, [userFetch]);
+
+    if (!post) {
+        return (
+            <></>
+        )
+    }
+
     return (
         <Container
             component="div"
@@ -128,15 +94,13 @@ const PostPage = () => {
         >
             {window.innerWidth > 767 ? (
                 <>
-                    <LeftFeed />
-                    <PostsFeed />
+                    <PostFeed post={post} user={user}/>
                     <CommentFeed />
                 </>
             ):
                 <>
-                    <LeftFeed />
                     <CommentFeed />
-                    <PostsFeed />
+                    <PostFeed post={post} user={user} />
                 </>
             }
 
