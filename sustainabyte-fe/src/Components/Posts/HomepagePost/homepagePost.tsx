@@ -118,7 +118,7 @@ const HomepagePost = (props: {post: Post, user: any}) => {
 
             {
             isXsScreen &&
-            <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl}/>
+            <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl} comments={post.comments}/>
             }
             <CardContent>
                 <Typography
@@ -158,7 +158,7 @@ const HomepagePost = (props: {post: Post, user: any}) => {
 
               {
               areCommentsVisible && (
-                <CommentBox></CommentBox>
+                <CommentBox title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl} comments={post.comments} _id={post._id}></CommentBox>
               )}
 
 

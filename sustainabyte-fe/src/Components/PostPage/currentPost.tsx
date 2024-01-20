@@ -117,7 +117,7 @@ const CurrentPost = (props: {post: any, user: any}) => {
 
             {
             isXsScreen &&
-            <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl}/>
+            <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl} comments={''}/>
             }
             <CardContent>
                 <Typography

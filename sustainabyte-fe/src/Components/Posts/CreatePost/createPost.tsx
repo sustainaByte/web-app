@@ -31,6 +31,7 @@ const fetchCreatePost = async (token: any, post: Post) => {
             "title": post.title,
             "content": post.content,
             "creatorId": post.creatorId,
+            "comments": post.comments,
             "kudos": post.kudos,
             "mediaUrl": post.mediaUrl
         })
@@ -110,6 +111,7 @@ function CreatePost ({handleClose}) {
                                     "content": message,
                                     "mediaUrl": [],
                                     "creatorId": "",
+                                    "comments": "",
                                     "kudos": []
                                 }
                             );
