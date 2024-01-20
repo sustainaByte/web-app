@@ -14,6 +14,7 @@ import {createOrder} from "../Paypal/paypalHelper";
 import PaypalDonate from "../Paypal/paypalDonations";
 import useFetchUser from "../Login/useFetchUser";
 import React, {useEffect, useState} from "react";
+import {BarChart} from "@mui/icons-material";
 
 interface PostsFeedProps {
     title: string;
@@ -54,18 +55,23 @@ const PostsFeed:React.FC<PostsFeedProps> = ({title}) => {
     )
 }
 
-const RegisterFeed = () => {
+const RightFeed = () => {
     // @ts-ignore
     const { authKey } = useAuth()
     const navigate = useNavigate()
 
     // check if user is not connected
-    if (!authKey) {
-        return (
+    return (
+        <Box component={"div"} sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px"
+        }}>
+            { !authKey &&
             <Box
                 component="div"
                 sx={{
-                    width: "20%",
+                    width: "100%",
                     borderRadius: '1rem',
                     backgroundColor: 'black',
                     p: 1,
@@ -81,12 +87,8 @@ const RegisterFeed = () => {
                     Register
                 </Button>
             </Box>
-        )
-    }
-
-    return (
-        <>
-        </>
+        }
+        </Box>
     )
 }
 
@@ -136,12 +138,12 @@ const Homepage:React.FC<HomepageProps> = ({title}) => {
                 <>
                     <LeftFeed />
                     <PostsFeed title={title}/>
-                    <RegisterFeed />
+                    <RightFeed />
                 </>
             ):
                 <>
                     <LeftFeed />
-                    <RegisterFeed />
+                    <RightFeed />
                     <PostsFeed title={title}/>
                 </>
             }
