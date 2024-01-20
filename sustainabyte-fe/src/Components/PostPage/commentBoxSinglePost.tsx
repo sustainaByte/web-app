@@ -73,12 +73,17 @@ const CommentBoxSinglePost = (props: {post: Post, user: any}) => {
                     ),
                 }}
             />
-            <Box marginTop="10px">
-                <Typography variant="body1" color="textSecondary" >
+            <Box marginTop="10px" sx={{
+                backgroundColor: "#000000",
+                borderRadius: "1rem",
+                paddingTop: "10px",
+                paddingLeft: "10px",
+                paddingBottom: "5px"
+            }}>
+                <Typography variant="body1" color="textSecondary" marginTop="5">
                     {comments.map((c, index) => (
                         <>
-                            <div style={{background: 'black'}} key={index}>{c}</div>
-                            <br></br>
+                            <Box sx={{ paddingBottom: "10px" }} key={index}>{c}</Box>
                         </>
                     ))}
                 </Typography>

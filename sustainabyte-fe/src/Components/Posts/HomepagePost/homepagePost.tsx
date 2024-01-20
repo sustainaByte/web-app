@@ -181,7 +181,7 @@ const HomepagePost = (props: {post: Post, user: any, showComments: boolean}) => 
 
             {props.showComments &&
                 <Button sx={{ float:'right' }} onClick={handleCommentClick}>
-                    <Badge badgeContent={10000} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
+                    <Badge badgeContent={post.comments.length} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
                         <QuestionAnswerOutlinedIcon style={{fill: `${theme.palette.text.primary}`}} />
                     </Badge>
                 </Button>
