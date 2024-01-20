@@ -13,7 +13,7 @@ import SimplePopup from '../Posts/PopupCreatePost/popupCreatePost';
 import {createOrder} from "../Paypal/paypalHelper";
 import PaypalDonate from "../Paypal/paypalDonations";
 import useFetchUser from "../Login/useFetchUser";
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 interface PostsFeedProps {
     title: string;
@@ -22,12 +22,17 @@ const PostsFeed:React.FC<PostsFeedProps> = ({title}) => {
     // @ts-ignore
     const {authKey} = useAuth()
     // @ts-ignore
-    let posts = useFetchPosts()['data']
-    // @ts-ignore
-    posts=posts.filter(post=>post.title.toLowerCase().includes(title.toLowerCase()))
+    const postsFetch = useFetchPosts()['data']
+    const [posts, setPosts] = useState([])
     // @ts-ignore
     const userFetch = useFetchUser(authKey?.data?.jwtToken)['data']
     const user = userFetch ? userFetch: null
+
+    useEffect(() => {
+        if (postsFetch?.length > 0) {
+            setPosts(postsFetch.filter((post: any) => post.title.toLowerCase().includes(title.toLowerCase())))
+        }
+    }, [postsFetch, title]);
 
     return (
         <Box
