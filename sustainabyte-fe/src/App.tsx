@@ -10,6 +10,7 @@ import getDesignTokens from "./Components/PageLayout/theme";
 import RegisterPage from "./Components/Register/register";
 import SettingsPage from "./Components/Settings/settings";
 import ProfilePage from "./Components/ProfilePage/profile";
+import PostPage from './Components/PostPage/postPage';
 
 export const ColorModeContext = React.createContext({
     toggleColorMode: () => {
@@ -49,7 +50,10 @@ function App() {
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterPage/>}/>
                     <Route path="settings" element={<SettingsPage/>}/>
-                    <Route path="profile" element={<ProfilePage/>}/>
+                    <Route path="profile" element={<ProfilePage/>}/>z
+                    <Route element={<PageLayout onInputChange={onInputChange} title={title}/>}>
+                        <Route path="post" element={<PostPage/>}/>
+                    </Route>
                 </Routes>
             </ThemeProvider>
         </ColorModeContext.Provider>

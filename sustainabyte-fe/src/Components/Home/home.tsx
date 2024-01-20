@@ -47,6 +47,7 @@ const PostsFeed:React.FC<PostsFeedProps> = ({title}) => {
             {posts?.map((post: Post) => <HomepagePost
                 post={post}
                 user={user}
+                showComments={true}
                 key={post._id}
             />)}
         </Box>

@@ -23,7 +23,7 @@ import {useNavigate} from "react-router-dom";
 import useFetchUser from "../../Login/useFetchUser";
 
 
-const HomepagePost = (props: {post: Post, user: any}) => {
+const HomepagePost = (props: {post: Post, user: any, showComments: boolean}) => {
     // @ts-ignore
     const {authKey} = useAuth()
     const [areCommentsVisible, setAreCommentsVisible] = useState(false);
@@ -32,6 +32,9 @@ const HomepagePost = (props: {post: Post, user: any}) => {
     const navigate = useNavigate()
     const [userLiked, setUserLiked] = useState(false)
     const [imageUrl, setImageUrl] = useState('')
+    const theme = useTheme();
+    const [isXsScreen, setIsXsScreen] = useState(true);
+    const [isCopied, setIsCopied] = useState(false)
 
     useEffect(() => {
         setUserLiked(props?.post.kudos.includes(props?.user?._id))
@@ -72,9 +75,18 @@ const HomepagePost = (props: {post: Post, user: any}) => {
         setAreCommentsVisible(!areCommentsVisible);
     };
 
-    const theme = useTheme();
+    const handleShareClick = (postId: string) => {
+        const baseUrl = window.location.origin;
+        const postUrl = baseUrl + `/#post?post_id=${postId}`
 
-    const [isXsScreen, setIsXsScreen] = useState(true);
+        navigator.clipboard.writeText(postUrl).then(() => {
+            setIsCopied(true);
+
+            setTimeout(() => {
+                setIsCopied(false);
+            }, 3000);
+        });
+    }
 
     useEffect(() => {
       const handleResize = () => {
@@ -160,22 +172,24 @@ const HomepagePost = (props: {post: Post, user: any}) => {
                 </Typography>
               </Button>
 
-              <Button sx={{ color: `${theme.palette.text.primary}` }}>
+              <Button sx={{ color: `${theme.palette.text.primary}` }} onClick={() => handleShareClick(post._id ? post._id: '')}>
                  <ShareIcon />
+                  {isCopied &&
+                    <Typography>Link Copied!</Typography>
+                  }
               </Button>
 
-              <Button sx={{ float:'right' }} onClick={handleCommentClick}>
-                 <Badge badgeContent={10000} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
-                    <QuestionAnswerOutlinedIcon style={{fill: `${theme.palette.text.primary}`}} />
-                  </Badge>
-              </Button>
-
+            {props.showComments &&
+                <Button sx={{ float:'right' }} onClick={handleCommentClick}>
+                    <Badge badgeContent={10000} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
+                        <QuestionAnswerOutlinedIcon style={{fill: `${theme.palette.text.primary}`}} />
+                    </Badge>
+                </Button>
+            }
               {
               areCommentsVisible && (
                 <CommentBox></CommentBox>
               )}
-
-
             </Box>
           </Container>
         </Card>
