@@ -71,6 +71,19 @@ const EventPost = (post: Post) => {
                 >
                   Join Event
                 </Button>
+                &nbsp; &nbsp; &nbsp; 
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  sx={{
+                    '--variant-borderWidth': '2px',
+                    borderRadius: 40,
+                    borderColor: 'primary.500',
+                    mx: 'auto',
+                  }}
+                >
+                  Donate
+                </Button>
 
                 <Button sx={{ float:'right' }} onClick={handleCommentClick}>
                       <InfoIcon style={{fill: `${theme.palette.text.primary}`}} />
