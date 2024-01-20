@@ -13,15 +13,26 @@ import SimplePopup from '../Posts/PopupCreatePost/popupCreatePost';
 import {createOrder} from "../Paypal/paypalHelper";
 import PaypalDonate from "../Paypal/paypalDonations";
 import useFetchUser from "../Login/useFetchUser";
+import React, {useEffect, useState} from "react";
 
-const PostsFeed = () => {
+interface PostsFeedProps {
+    title: string;
+}
+const PostsFeed:React.FC<PostsFeedProps> = ({title}) => {
     // @ts-ignore
     const {authKey} = useAuth()
     // @ts-ignore
-    const posts = useFetchPosts()['data']
+    const postsFetch = useFetchPosts()['data']
+    const [posts, setPosts] = useState([])
     // @ts-ignore
     const userFetch = useFetchUser(authKey?.data?.jwtToken)['data']
     const user = userFetch ? userFetch: null
+
+    useEffect(() => {
+        if (postsFetch?.length > 0) {
+            setPosts(postsFetch.filter((post: any) => post.title.toLowerCase().includes(title.toLowerCase())))
+        }
+    }, [postsFetch, title]);
 
     return (
         <Box
@@ -105,8 +116,10 @@ const LeftFeed = () => {
         </Box>
     )
 }
-
-const Homepage = () => {
+interface HomepageProps {
+    title: string;
+}
+const Homepage:React.FC<HomepageProps> = ({title}) => {
     const theme = useTheme()
     return (
         <Container
@@ -121,14 +134,14 @@ const Homepage = () => {
             {window.innerWidth > 767 ? (
                 <>
                     <LeftFeed />
-                    <PostsFeed />
+                    <PostsFeed title={title}/>
                     <RegisterFeed />
                 </>
             ):
                 <>
                     <LeftFeed />
                     <RegisterFeed />
-                    <PostsFeed />
+                    <PostsFeed title={title}/>
                 </>
             }
 
