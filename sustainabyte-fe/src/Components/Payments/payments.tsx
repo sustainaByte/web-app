@@ -8,7 +8,7 @@ import { useTheme } from '@emotion/react';
 import PaypalDonate from '../Paypal/paypalDonations';
 
 
-const PaymentsPage = (post: Post) => {
+const PaymentsPage = (props: {post: any}) => {
 
     const theme = useTheme()
 
@@ -28,21 +28,22 @@ const PaymentsPage = (post: Post) => {
         overflow="hidden" 
         sx={{
           wordWrap: 'break-word', 
-          overflowWrap: 'break-word'
+          overflowWrap: 'break-word',
+          backgroundColor: 'black'
         }}
       >
             <CardContent>
                 <Typography variant="h3" sx={{ 
                     color: '#027d51'
                 }} gutterBottom>
-                    {post.title}
+                    {props.post.title}
                 </Typography>
 
                 <Typography variant="h5" sx={{ color: '#60796e'}}>
-                    {post.content}
+                    {props.post.content}
                 </Typography>
                 </CardContent>
-                    <PaypalDonate></PaypalDonate>
+                <PaypalDonate />
         </Box>
         </Box>
     );
