@@ -67,28 +67,21 @@ const RightFeed = () => {
     const [statistics, setStatistics] = useState<Statistics>();
 
     useEffect(() => {
-        if (statisticsFetch && statisticsFetch.Locations && statisticsFetch.Locations.size > 0) {
+        if (statisticsFetch && statisticsFetch.Locations) {
             setStatistics(statisticsFetch);
         }
     }, [statisticsFetch]);
 
-    console.log(statistics?.Locations)
-
-    const locations = statistics?.Locations;
-    let keysArray = new Array;
-    let valuesArray = new Array;
-    if (locations) {
-         keysArray = Array.from(locations.keys());
-         valuesArray = Array.from(locations.values());
-
-        console.log(keysArray);  
-        console.log(valuesArray);
+    let keysArray: any[] = [];
+    let valuesArray = [];
+    if (statistics?.Locations) {
+        console.log(statistics.Locations)
+         keysArray = Array.from(Object.keys(statistics.Locations));
+         valuesArray = Array.from(Object.values(statistics.Locations));
     }
 
-    console.log(locations)
-
     const data = [
-        { name: keysArray[0], value: locations ? Array.from(locations.values())[0] : 0 },
+        { name: keysArray[0], value: statistics?.Locations ? Array.from(Object.keys(statistics.Locations))[0] : 0 },
         { name: 'Group B', value: 300 },
         { name: 'Group C', value: 300 },
         { name: 'Group D', value: 200 },
