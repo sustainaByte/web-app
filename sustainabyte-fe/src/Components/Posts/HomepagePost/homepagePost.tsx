@@ -168,5 +168,4 @@ const HomepagePost = (props: {post: Post, user: any}) => {
 }
 
 
-
 export default HomepagePost
