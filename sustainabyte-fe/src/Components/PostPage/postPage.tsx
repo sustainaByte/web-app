@@ -9,6 +9,7 @@ import CommentBoxSinglePost from './commentBoxSinglePost';
 import LikeSinglePost from './LikeSinglePost';
 import {useEffect, useState} from 'react';
 import HomepagePost from "../Posts/HomepagePost/homepagePost";
+import {Post} from "../Posts/posts";
 
 const PostFeed = (props: {post: any, user: any}) => {
     return (
@@ -32,7 +33,7 @@ const PostFeed = (props: {post: any, user: any}) => {
     )
 }
 
-const CommentFeed = () => {
+const CommentFeed = (props: {post: Post, user: any}) => {
     return (
         <Box
             component="div"
@@ -43,7 +44,7 @@ const CommentFeed = () => {
                 gap: '20px'
             }}
         >
-            <CommentBoxSinglePost></CommentBoxSinglePost>
+            <CommentBoxSinglePost post={props.post} user={props.user} />
         </Box>
     )
 }
@@ -96,11 +97,11 @@ const PostPage = () => {
             {window.innerWidth > 767 ? (
                 <>
                     <PostFeed post={post} user={user}/>
-                    <CommentFeed />
+                    <CommentFeed post={post} user={user}/>
                 </>
             ):
                 <>
-                    <CommentFeed />
+                    <CommentFeed post={post} user={user}/>
                     <PostFeed post={post} user={user} />
                 </>
             }
