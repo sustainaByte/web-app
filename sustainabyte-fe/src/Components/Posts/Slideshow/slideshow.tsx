@@ -23,7 +23,7 @@ const CustomSlideshow = (post: Post) => {
 
 return (
     <Box>
-    {post && post.mediaUrl && post?.mediaUrl.length > 0 ? (
+    {post && post.mediaUrl ? (
         <Box sx={{ 
           maxWidth: 600,
           flexGrow: 1,
@@ -31,40 +31,16 @@ return (
           overflow: 'hidden',
           
           }}>
-
-          {images.map((imageUrl, index) => (
-            <div key={index} style={{ display: index === activeStep ? 'block' : 'none' }}>
-              <Box
-                component="img"
-                sx={{
-                  height: 255,
-                  display: 'block',
-                  maxWidth: 600,
-                  overflow: 'hidden',
-                  width: '100%',
-                }}
-                src=""
-                alt={`Image ${index + 1}`}
-              />
-            </div>
-          ))}
-
-          <MobileStepper
-            steps={maxSteps}
-            position="static"
-            activeStep={activeStep}
-            nextButton={
-              <Button size="small" onClick={handleNext}>
-                Next
-                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-              </Button>
-            }
-            backButton={
-              <Button size="small" onClick={handlePrevious}>
-                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-                Previous
-              </Button>
-            }
+          <Box
+            component="img"
+            sx={{
+              height: 255,
+              display: 'block',
+              maxWidth: 600,
+              overflow: 'hidden',
+              width: '100%',
+            }}
+            src={post.mediaUrl}
           />
         </Box>
       ) : null}

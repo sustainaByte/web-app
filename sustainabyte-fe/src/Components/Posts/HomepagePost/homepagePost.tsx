@@ -30,13 +30,34 @@ const HomepagePost = (props: {post: Post, user: any}) => {
     const post = props.post
     const [kudosCount, setKudosCount] = useState(post.kudos.length)
     const navigate = useNavigate()
-    const [userLiked, setUserLiked] = useState(
-        props.user ? props.post.kudos.includes(props.user._id): null)
+    const [userLiked, setUserLiked] = useState(false)
+    const [imageUrl, setImageUrl] = useState('')
+
+    useEffect(() => {
+        setUserLiked(props?.post.kudos.includes(props?.user?._id))
+
+        if (post._id) {
+            fetch(`https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/posts/${post._id}/photo`,
+                {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authKey}`,
+                    }
+                })
+                .then(async response => {
+                    if (response.ok) {
+                        setImageUrl(URL.createObjectURL(await response.blob()))
+                    }
+                })
+        }
+    }, [post, props?.user]);
 
     const handleKudos = ()  => {
-        if (props.user) {
+        if (props?.user) {
             addKudos(authKey, post._id)
             if (userLiked) {
+
                 setKudosCount(kudosCount - 1)
             } else {
                 setKudosCount(kudosCount + 1)
@@ -101,24 +122,17 @@ const HomepagePost = (props: {post: Post, user: any}) => {
                   xl:"80%", //1546+ pixels
                 },
               }}
-              avatar={
-                <Avatar sx={{
-                 bgcolor: green[700] }} aria-label="recipe">
-                  R {/* here goes the initial of the user */}
-                </Avatar>
-              }
               action={
                 <IconButton aria-label="settings">
                 </IconButton>
               }
               title={post.title}
-              subheader={post._id}
 
             />
 
             {
             isXsScreen &&
-            <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl}/>
+            <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={imageUrl}/>
             }
             <CardContent>
                 <Typography

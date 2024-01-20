@@ -3,8 +3,13 @@ import Header from "../Header/header";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import {useTheme} from "@mui/material";
+import React from "react";
 
-const PageLayout = () => {
+interface PageLayoutProps {
+    title: string;
+    onInputChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+}
+const PageLayout:React.FC<PageLayoutProps> = ({title,onInputChange}) => {
     const theme = useTheme()
 
     return (
@@ -15,7 +20,7 @@ const PageLayout = () => {
                 backgroundColor: `${theme.palette.background.default}`
             }}
         >
-            <Header />
+            <Header title={title} onInputChange={onInputChange}/>
             <Outlet />
         </Box>
     )

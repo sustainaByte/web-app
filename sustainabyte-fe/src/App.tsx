@@ -1,4 +1,4 @@
-import React, {createContext, useContext} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import {Route, Routes} from "react-router-dom";
 import PageLayout from "./Components/PageLayout/pageLayout";
 import Homepage from "./Components/Home/home";
@@ -34,12 +34,18 @@ function App() {
     // Update the theme only if the mode changes
     const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
+    const [title,setTitle]=useState("")
+    const onInputChange=(evt: React.ChangeEvent<HTMLInputElement>)=>{
+        setTitle(evt.target.value)
+    }
+
+
     return (
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
                 <Routes>
-                    <Route element={<PageLayout/>}>
-                        <Route path="/" element={<Homepage/>}/>
+                    <Route element={<PageLayout title={title} onInputChange={onInputChange}/>}>
+                        <Route index element={<Homepage title={title}/>}/>
                     </Route>
                     <Route path="login" element={<LoginPage/>}/>
                     <Route path="register" element={<RegisterPage/>}/>
