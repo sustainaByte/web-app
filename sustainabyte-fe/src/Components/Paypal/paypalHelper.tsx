@@ -20,5 +20,7 @@ export const onApprove = (data: any, actions: any) => {
     return actions.order.capture().then((details: any) => {
         const name = details.payer.name.given_name;
         alert(`Transaction completed by ${name}`);
+    }).then(() => {
+
     });
 }

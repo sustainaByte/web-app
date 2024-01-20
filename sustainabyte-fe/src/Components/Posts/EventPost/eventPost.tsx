@@ -19,10 +19,11 @@ import { AspectRatio, KeyboardArrowLeft, KeyboardArrowRight, Slideshow } from '@
 import CommentBox from '../Comment/comment';
 import CustomSlideshow from '../Slideshow/slideshow';
 import useFetchPosts from '../useFetchPosts';
+import PaypalDonate from "../../Paypal/paypalDonations";
 
 
 
-const EventPost = (post: Post) => {
+const EventPost = (props: {post: any, user: any}) => {
 
     const [areCommentsVisible, setAreCommentsVisible] = useState(false);
 
@@ -56,7 +57,7 @@ const EventPost = (post: Post) => {
 
               <Box sx={{ m: 2 }} />
 
-              <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl} comments={post.comments}/>
+              <CustomSlideshow title={props.post.title} content={props.post.content} creatorId={props.post.creatorId} kudos={props.post.kudos} mediaUrl={props.post.mediaUrl} comments={props.post.comments}/>
 
               <CardContent sx={{ gap: 1.5, minWidth: 200, marginTop: 1}}>
                 <Button

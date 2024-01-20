@@ -1,10 +1,10 @@
 import './home.scss'
 import Container from "@mui/material/Container";
 import {useAuth} from "../Login/login";
-import {useTheme} from "@mui/material";
+import {ButtonGroup, useTheme} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import useFetchPosts from "../Posts/useFetchPosts";
+import useFetchPosts, {useFetchEvents} from "../Posts/useFetchPosts";
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomepagePost from "../Posts/HomepagePost/homepagePost";
 import {Post} from "../Posts/posts";
@@ -15,6 +15,7 @@ import PaypalDonate from "../Paypal/paypalDonations";
 import useFetchUser from "../Login/useFetchUser";
 import React, {useEffect, useState} from "react";
 import {BarChart} from "@mui/icons-material";
+import EventPost from "../Posts/EventPost/eventPost";
 
 interface PostsFeedProps {
     title: string;
@@ -55,10 +56,39 @@ const PostsFeed:React.FC<PostsFeedProps> = ({title}) => {
     )
 }
 
-const RightFeed = () => {
+const EventsFeed = () => {
+    // @ts-ignore
+    const {authKey} = useAuth()
+    // @ts-ignore
+    const userFetch = useFetchUser(authKey?.data?.jwtToken)['data']
+    const user = userFetch ? userFetch: null
+    // @ts-ignore
+    const events = useFetchEvents()['data']
+
+    return (
+        <Box
+            component="div"
+            sx={{
+                width: "60%",
+                display: "flex",
+                flexDirection: 'column',
+                gap: '20px'
+            }}
+        >
+            {events?.map((event: any) => <EventPost
+                post={event}
+                user={user}
+                key={event._id}
+            />)}
+        </Box>
+    )
+}
+
+const RightFeed = (props: {seePosts: boolean, setSeePosts: any}) => {
     // @ts-ignore
     const { authKey } = useAuth()
     const navigate = useNavigate()
+    const theme = useTheme()
 
     // check if user is not connected
     return (
@@ -67,6 +97,14 @@ const RightFeed = () => {
             flexDirection: "column",
             gap: "20px"
         }}>
+            <ButtonGroup>
+                <Button sx={{
+                    backgroundColor: props.seePosts ? `${theme.palette.text.disabled}`: "inherit"
+                }} onClick={() => props.setSeePosts(true)}>Posts</Button>
+                <Button sx={{
+                    backgroundColor: !props.seePosts ? `${theme.palette.text.disabled}`: "inherit"
+                }}  onClick={() => props.setSeePosts(false)}>Events</Button>
+            </ButtonGroup>
             { !authKey &&
             <Box
                 component="div"
@@ -124,6 +162,8 @@ interface HomepageProps {
 }
 const Homepage:React.FC<HomepageProps> = ({title}) => {
     const theme = useTheme()
+    const [seePosts, setSeePosts] = useState(true)
+
     return (
         <Container
             component="div"
@@ -137,14 +177,18 @@ const Homepage:React.FC<HomepageProps> = ({title}) => {
             {window.innerWidth > 767 ? (
                 <>
                     <LeftFeed />
-                    <PostsFeed title={title}/>
-                    <RightFeed />
+                    {
+                        seePosts ? <PostsFeed title={title} />: <EventsFeed />
+                    }
+                    <RightFeed seePosts={seePosts} setSeePosts={setSeePosts} />
                 </>
             ):
                 <>
                     <LeftFeed />
-                    <RightFeed />
-                    <PostsFeed title={title}/>
+                    <RightFeed seePosts={seePosts} setSeePosts={setSeePosts} />
+                    {
+                        seePosts ? <PostsFeed title={title} />: <EventsFeed />
+                    }
                 </>
             }
 
