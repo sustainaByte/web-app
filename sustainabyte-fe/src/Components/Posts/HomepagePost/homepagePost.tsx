@@ -161,7 +161,6 @@ const HomepagePost = (props: {post: Post, user: any}) => {
                 <CommentBox title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl} comments={post.comments} _id={post._id}></CommentBox>
               )}
 
-
             </Box>
           </Container>
         </Card>
