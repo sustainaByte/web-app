@@ -5,10 +5,10 @@ import {useTheme} from "@mui/material";
 import Box from "@mui/material/Box";
 import {useSearchParams} from "react-router-dom";
 import useFetchUser from "../Login/useFetchUser";
-import CurrentPost from './currentPost';
 import CommentBoxSinglePost from './commentBoxSinglePost';
 import LikeSinglePost from './LikeSinglePost';
 import {useEffect, useState} from 'react';
+import HomepagePost from "../Posts/HomepagePost/homepagePost";
 
 const PostFeed = (props: {post: any, user: any}) => {
     return (
@@ -22,9 +22,10 @@ const PostFeed = (props: {post: any, user: any}) => {
             }}
         >
             {props.post &&
-                <CurrentPost
+                <HomepagePost
                     post={props.post}
                     user={props.user}
+                    showComments={false}
                 />
             }
         </Box>
