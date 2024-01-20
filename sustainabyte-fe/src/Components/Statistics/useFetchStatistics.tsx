@@ -29,5 +29,4 @@ const useFetchStatistics = () => {
 
     return statistics
 }
-
 export default useFetchStatistics

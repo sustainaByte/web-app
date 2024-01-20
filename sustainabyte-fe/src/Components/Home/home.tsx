@@ -5,7 +5,8 @@ import {useTheme} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import useFetchPosts from "../Posts/useFetchPosts";
-import useFetchStatistics from "../Statistics/useFetchStatistics";
+import useFetchStatistics  from "../Statistics/useFetchStatistics";
+import useFetchCreateStatistics from "../Statistics/useFetchCreateStatistics";
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomepagePost from "../Posts/HomepagePost/homepagePost";
 import {Post} from "../Posts/posts";
@@ -15,7 +16,8 @@ import SimplePopup from '../Posts/PopupCreatePost/popupCreatePost';
 import {createOrder} from "../Paypal/paypalHelper";
 import PaypalDonate from "../Paypal/paypalDonations";
 import useFetchUser from "../Login/useFetchUser";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
+import { Typography } from '@mui/material';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
 interface PostsFeedProps {
     title: string;
@@ -63,6 +65,8 @@ const RightFeed = () => {
     const { authKey } = useAuth()
     const navigate = useNavigate()
 
+    useFetchCreateStatistics();
+
     const statisticsFetch = useFetchStatistics();
     const [statistics, setStatistics] = useState<Statistics>();
 
@@ -80,15 +84,29 @@ const RightFeed = () => {
          valuesArray = Array.from(Object.values(statistics.Locations));
     }
 
-    const data = [
-        { name: keysArray[0], value: statistics?.Locations ? Array.from(Object.keys(statistics.Locations))[0] : 0 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
-    ];
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+    const data = [];
+    let total = 0;
 
+    for (let i = 0; i < valuesArray.length; i++) {
+        total += valuesArray[i]
+    }
+
+    for (let i = 0; i < keysArray.length; i++) {
+        const percentage = ((valuesArray[i] / total) * 100).toFixed(1);
+        data.push({
+            name: keysArray[i] + " " + percentage + "%",
+            value: valuesArray[i],
+        });
+    }
+    data.sort((a, b) => b.value - a.value);
+    const COLORS = ['#0088FE'];
+
+    for (let i = 0; i < data.length; i++) {
+        const randomColor = '#' + (Math.floor(Math.random() * 127) + 127).toString(16) + (Math.floor(Math.random() * 127) + 127).toString(16) + (Math.floor(Math.random() * 127) + 127).toString(16);
+        COLORS.push(randomColor);
+    }
+    const theme = useTheme();
     return (
         <Box component={"div"} sx={{
             display: "flex",
@@ -116,6 +134,8 @@ const RightFeed = () => {
                     </Button>
                 </Box>
             }
+
+            
             <Box
                 component="div"
                 sx={{
@@ -126,12 +146,15 @@ const RightFeed = () => {
                     height: 'max-content'
                 }}
             >
-                <PieChart width={220} height={400}>
+                <Typography variant="h4" sx={{ textAlign: 'center', color: `${theme.palette.text.primary}`, fontSize: '1.5rem' }}>
+                    County statistics
+                </Typography>
+                <PieChart width={280} height={600}>
                     <Pie
                         data={data}
-                        cx={100}
-                        cy={100}
-                        outerRadius={80}
+                        cx={143}
+                        cy={130}
+                        outerRadius={120}
                         fill="#8884d8"
                         dataKey="value"
                     >
@@ -139,8 +162,11 @@ const RightFeed = () => {
                             data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
                         }
                     </Pie>
-                    <Legend verticalAlign="bottom" height={200}/>
+                    <Legend verticalAlign="bottom" height={300}/>
                 </PieChart>
+                <Typography height={50}  variant="h4" sx={{ textAlign: 'center', color: `${theme.palette.text.secondary}`, fontSize: '1.2rem' }}>
+                    Top county: {data.at(0)?.name.replace(/[^a-zA-Z]/g, '')} with {data.at(0)?.value } posts
+                </Typography>
             </Box>
         </Box>
     )
