@@ -124,7 +124,7 @@ const Header: React.FC<HeaderProps> = ({title, onInputChange}) => {
                     {authKey && (
                         <>
                             <li>
-                                <IconButton
+                                <IconButton onClick={() => navigate("/profile")}
                                     aria-label="profile"
                                     sx={{color: `${theme.palette.text.primary}`}}
                                 >
