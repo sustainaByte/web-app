@@ -1,29 +1,21 @@
 import { useState } from 'react';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import {green} from '@mui/material/colors';
-import {Post} from '../posts';
 import Button from '@mui/material/Button/Button';
-import Container from '@mui/material/Container';
-import {Badge, Box, CardActions, MobileStepper, useTheme} from '@mui/material';
-import ShareIcon from '@mui/icons-material/Share';
-import ParkIcon from '@mui/icons-material/Park';
+import {Box, Modal, useTheme} from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
-import { AspectRatio, KeyboardArrowLeft, KeyboardArrowRight, Slideshow } from '@mui/icons-material';
-
-import CommentBox from '../Comment/comment';
 import CustomSlideshow from '../Slideshow/slideshow';
-import useFetchPosts from '../useFetchPosts';
+import PaymentsPage from "../../Payments/payments";
 
 
 
-const EventPost = (post: Post) => {
-
+const EventPost = (props: {post: any, user: any}) => {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const [areCommentsVisible, setAreCommentsVisible] = useState(false);
 
     const handleCommentClick = () => {
@@ -44,19 +36,15 @@ const EventPost = (post: Post) => {
               }}
             >
 
-            <Box style={{ display: 'flex', alignItems: 'center' }} sx={{ marginLeft: 2 }}>
-                  <Avatar sx={{ bgcolor: green[700], marginRight: 1 }} aria-label="recipe">
-                    R {/* here goes the initial of the user */}
-                  </Avatar>
-
+              <Box style={{ display: 'flex', alignItems: 'center' }} sx={{ marginLeft: 2 }}>
                   <Typography fontSize="sm" sx={{ mt: 0.5 }}>
-                    EVENT NAME
+                      {props.post.title}
                   </Typography>
               </Box>
 
               <Box sx={{ m: 2 }} />
 
-              <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl}/>
+              <CustomSlideshow title={props.post.title} content={props.post.content} creatorId={props.post.creatorId} kudos={props.post.kudos} mediaUrl={props.post.mediaUrl} comments={props.post.comments}/>
 
               <CardContent sx={{ gap: 1.5, minWidth: 200, marginTop: 1}}>
                 <Button
@@ -71,7 +59,28 @@ const EventPost = (post: Post) => {
                 >
                   Join Event
                 </Button>
-
+                &nbsp; &nbsp; &nbsp; 
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  sx={{
+                    '--variant-borderWidth': '2px',
+                    borderRadius: 40,
+                    borderColor: 'primary.500',
+                    mx: 'auto',
+                  }}
+                  onClick={handleOpen}
+                >
+                  Donate
+                </Button>
+                  <Modal
+                      open={open}
+                      onClose={handleClose}
+                  >
+                      <Box>
+                          <PaymentsPage post={props.post} />
+                      </Box>
+                  </Modal>
                 <Button sx={{ float:'right' }} onClick={handleCommentClick}>
                       <InfoIcon style={{fill: `${theme.palette.text.primary}`}} />
                 </Button>
@@ -80,8 +89,7 @@ const EventPost = (post: Post) => {
 
                   <Box sx={{ marginTop: 2 }} >
                     <Typography fontSize="sm" sx={{ mt: 0.5 }}>
-                    EVENT DESCRIPTION: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor.
+                        {props.post.description}
                     </Typography>
                   </Box>
                 )}

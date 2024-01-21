@@ -127,6 +127,7 @@ function CreatePost ({handleClose}) {
                                     "mediaUrl": image ? URL.createObjectURL(image): '',
                                     "creatorId": "",
                                     "kudos": [],
+                                    "comments": "",
                                     "mediaFile": image
                                 }
                             );

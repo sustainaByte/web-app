@@ -1,10 +1,10 @@
 import './home.scss'
 import Container from "@mui/material/Container";
 import {useAuth} from "../Login/login";
-import {useTheme} from "@mui/material";
+import {ButtonGroup, useTheme} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import useFetchPosts from "../Posts/useFetchPosts";
+import useFetchPosts, {useFetchEvents} from "../Posts/useFetchPosts";
 import useFetchStatistics  from "../Statistics/useFetchStatistics";
 import useFetchCreateStatistics from "../Statistics/useFetchCreateStatistics";
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -16,7 +16,9 @@ import SimplePopup from '../Posts/PopupCreatePost/popupCreatePost';
 import {createOrder} from "../Paypal/paypalHelper";
 import PaypalDonate from "../Paypal/paypalDonations";
 import useFetchUser from "../Login/useFetchUser";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
+import {BarChart} from "@mui/icons-material";
+import EventPost from "../Posts/EventPost/eventPost";
 import { Typography } from '@mui/material';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
 interface PostsFeedProps {
@@ -59,8 +61,35 @@ const PostsFeed:React.FC<PostsFeedProps> = ({title}) => {
     )
 }
 
+const EventsFeed = () => {
+    // @ts-ignore
+    const {authKey} = useAuth()
+    // @ts-ignore
+    const userFetch = useFetchUser(authKey?.data?.jwtToken)['data']
+    const user = userFetch ? userFetch: null
+    // @ts-ignore
+    const events = useFetchEvents()['data']
 
-const RightFeed = () => {
+    return (
+        <Box
+            component="div"
+            sx={{
+                width: "60%",
+                display: "flex",
+                flexDirection: 'column',
+                gap: '20px'
+            }}
+        >
+            {events?.map((event: any) => <EventPost
+                post={event}
+                user={user}
+                key={event._id}
+            />)}
+        </Box>
+    )
+}
+
+const RightFeed = (props: {seePosts: boolean, setSeePosts: any}) => {
     // @ts-ignore
     const { authKey } = useAuth()
     const navigate = useNavigate()
@@ -113,29 +142,37 @@ const RightFeed = () => {
             flexDirection: "column",
             gap: "20px"
         }}>
-            {!authKey &&
-                <Box
-                    component="div"
-                    sx={{
-                        width: "100%",
-                        borderRadius: '1rem',
-                        backgroundColor: 'black',
-                        p: 1,
-                        height: 'max-content'
-                    }}
-                    className="register-box"
-                >
-                    <h2>New to SustainaByte?</h2>
-                    <Button
-                        color={"inherit"}
-                        onClick={() => navigate("/register")}
-                    >
-                        Register
-                    </Button>
-                </Box>
-            }
+            <ButtonGroup>
+                <Button sx={{
+                    backgroundColor: props.seePosts ? `${theme.palette.text.disabled}`: "inherit"
+                }} onClick={() => props.setSeePosts(true)}>Posts</Button>
+                <Button sx={{
+                    backgroundColor: !props.seePosts ? `${theme.palette.text.disabled}`: "inherit"
+                }}  onClick={() => props.setSeePosts(false)}>Events</Button>
+            </ButtonGroup>
 
-            
+            { !authKey &&
+            <Box
+                component="div"
+                sx={{
+                    width: "100%",
+                    borderRadius: '1rem',
+                    backgroundColor: 'black',
+                    p: 1,
+                    height: 'max-content'
+                }}
+                className="register-box"
+            >
+                <h2>New to SustainaByte?</h2>
+                <Button
+                    color={"inherit"}
+                    onClick={() => navigate("/register")}
+                >
+                    Register
+                </Button>
+            </Box>
+        }
+
             <Box
                 component="div"
                 sx={{
@@ -204,6 +241,8 @@ interface HomepageProps {
 }
 const Homepage:React.FC<HomepageProps> = ({title}) => {
     const theme = useTheme()
+    const [seePosts, setSeePosts] = useState(true)
+
     return (
         <Container
             component="div"
@@ -217,14 +256,18 @@ const Homepage:React.FC<HomepageProps> = ({title}) => {
             {window.innerWidth > 767 ? (
                 <>
                     <LeftFeed />
-                    <PostsFeed title={title}/>
-                    <RightFeed />
+                    {
+                        seePosts ? <PostsFeed title={title} />: <EventsFeed />
+                    }
+                    <RightFeed seePosts={seePosts} setSeePosts={setSeePosts} />
                 </>
             ):
                 <>
                     <LeftFeed />
-                    <RightFeed />
-                    <PostsFeed title={title}/>
+                    <RightFeed seePosts={seePosts} setSeePosts={setSeePosts} />
+                    {
+                        seePosts ? <PostsFeed title={title} />: <EventsFeed />
+                    }
                 </>
             }
 

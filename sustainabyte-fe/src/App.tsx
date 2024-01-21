@@ -11,6 +11,7 @@ import RegisterPage from "./Components/Register/register";
 import SettingsPage from "./Components/Settings/settings";
 import ProfilePage from "./Components/ProfilePage/profile";
 import PostPage from './Components/PostPage/postPage';
+import EventPost from "./Components/Posts/EventPost/eventPost";
 
 export const ColorModeContext = React.createContext({
     toggleColorMode: () => {

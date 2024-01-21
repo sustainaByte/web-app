@@ -117,7 +117,8 @@ export default function ProfilePage() {
                         borderRadius: "10px 10px 0 0",
                         border: `1px solid ${theme.palette.text.secondary}`,
                         borderBottom: 'none',
-                        boxSizing:"border-box"
+                        boxSizing:"border-box",
+                        padding: '20px'
                     }}>
                         <Avatar className="profilePic" src={user.imageUrl} alt="Profile Picture" sx={{
                             width: '150px',

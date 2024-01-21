@@ -144,7 +144,7 @@ const HomepagePost = (props: {post: Post, user: any, showComments: boolean}) => 
 
             {
             isXsScreen &&
-            <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={imageUrl}/>
+            <CustomSlideshow title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={imageUrl} comments={post.comments}/>
             }
             <CardContent>
                 <Typography
@@ -181,14 +181,14 @@ const HomepagePost = (props: {post: Post, user: any, showComments: boolean}) => 
 
             {props.showComments &&
                 <Button sx={{ float:'right' }} onClick={handleCommentClick}>
-                    <Badge badgeContent={10000} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
+                    <Badge badgeContent={post.comments.length} max={9} sx={{color: `${theme.palette.text.secondary}`}}>
                         <QuestionAnswerOutlinedIcon style={{fill: `${theme.palette.text.primary}`}} />
                     </Badge>
                 </Button>
             }
               {
               areCommentsVisible && (
-                <CommentBox></CommentBox>
+                <CommentBox title={post.title} content={post.content} creatorId={post.creatorId} kudos={post.kudos} mediaUrl={post.mediaUrl} comments={post.comments} _id={post._id}></CommentBox>
               )}
             </Box>
           </Container>
