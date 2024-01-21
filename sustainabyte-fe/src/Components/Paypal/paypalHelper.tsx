@@ -24,7 +24,9 @@ export const onApprove = (
     data: any,
     actions: any,
     authKey: string,
-    navigate: (path: string) => void
+    navigate: (path: string) => void,
+    postID: string,
+    collectedMoney: string
 ) => {
     return actions.order
         .capture()
@@ -59,8 +61,20 @@ export const onApprove = (
                         })
                     })
                         .then(() => {
+                            fetch(`https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/events/${postID}`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${authKey}`,
+                                },
+                                body: JSON.stringify({
+                                    collectedMoney: parseInt(collectedMoney) + 100
+                                })
+                            })
+                        })
+                        .then(() => {
                             navigate('/settings');
-                        });
+                        })
                 });
         });
 };

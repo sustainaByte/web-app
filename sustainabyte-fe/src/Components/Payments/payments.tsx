@@ -43,7 +43,7 @@ const PaymentsPage = (props: {post: any}) => {
                     {props.post.content}
                 </Typography>
                 </CardContent>
-                <PaypalDonate />
+                <PaypalDonate postID={props.post._id} collectedMoney={props.post.collectedMoney} />
         </Box>
         </Box>
     );

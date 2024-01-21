@@ -48,23 +48,10 @@ const EventPost = (props: {post: any, user: any}) => {
               </Box>
 
               <Box sx={{ m: 2 }} />
-
               <Typography sx={{textAlign: 'right'}}>{props.post.requiredMoney}</Typography>
               <LinearProgress sx={{margin: '0 0.5rem'}} variant="determinate" value={progress > 0 ? progress: 1} />
 
               <CardContent sx={{ gap: 1.5, minWidth: 200, marginTop: 1}}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  sx={{
-                    '--variant-borderWidth': '2px',
-                    borderRadius: 40,
-                    borderColor: 'primary.500',
-                    mx: 'auto',
-                  }}
-                >
-                  Join Event
-                </Button>
                 &nbsp; &nbsp; &nbsp; 
                 <Button
                   variant="outlined"

@@ -168,7 +168,7 @@ const HomepagePost = (props: {post: Post, user: any, showComments: boolean}) => 
                     {userLiked ? <ParkIcon />: <ParkOutlinedIcon />}
                 </Badge>
                 <Typography sx={{ marginLeft: '4px', marginTop: '5px', color: `${theme.palette.text.secondary}` }} variant="body2">
-                  {kudosCount <= 1? `${kudosCount} Like`: `${kudosCount} Likes`}
+                  {kudosCount > 0 && kudosCount <= 1? `${kudosCount} Like`: `${kudosCount} Likes`}
                 </Typography>
               </Button>
 

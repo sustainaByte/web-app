@@ -15,29 +15,24 @@ const fetchCreateEvent = async (token: any, post: {
     funds: string,
     comments: string
 }) => {
-    const formData = new FormData();
-
-    formData.append('title', post.title);
-    formData.append('content', post.content);
-    formData.append('creatorId', post.creatorId);
-    formData.append('kudos', JSON.stringify(post.kudos));
-    formData.append('location', post.location)
-    formData.append('requiredMoney', post.funds)
-    formData.append('collectedMoney', '0')
-
     fetch('https://sustainabyte-api-service-2pvo3zhaxq-ey.a.run.app/events', {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token.data.jwtToken}`,
+            'Content-Type': 'application/json'
         },
-        body: formData
+        body: JSON.stringify({
+            title: post.title,
+            content: post.content,
+            requiredMoney: parseInt(post.funds)
+        })
     })
         .then(response => {
             if (response.ok) {
                 return response.json()
             }
             else {
-                return {'err': 'There was a problem creating the post!'}
+                return {'err': 'There was a problem creating the event!'}
             }
         })
 }
@@ -97,10 +92,7 @@ const CreateEvent = ({handleClose}) => {
                 <FormControl sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', marginBottom: '10px', gap: '10px' }} defaultValue="" required>
                     <TextField onChange={handleTitleChange} id="outlined-basic" label="Title" variant="outlined" sx={{ width:"100%" }} />
                     <TextField onChange={handleMessageChange} id="outlined-basic" label="Write your message" variant="outlined"  multiline rows={3} sx={{ width:"100%" }} />
-                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px'}}>
-                        <TextField onChange={handleCountyChange} id="outlined-basic" label="County" />
-                        <TextField onChange={handleFundsChange} id="outlined-basic" label="Required Funds" />
-                    </Box>
+                    <TextField onChange={handleFundsChange} id="outlined-basic" label="Required Funds" />
                 </FormControl>
 
                 <Box component={"div"} sx={{
