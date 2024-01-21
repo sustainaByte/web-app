@@ -77,7 +77,7 @@ const HomepagePost = (props: {post: Post, user: any, showComments: boolean}) => 
 
     const handleShareClick = (postId: string) => {
         const baseUrl = window.location.origin;
-        const postUrl = baseUrl + `/#post?post_id=${postId}`
+        const postUrl = baseUrl + `/web-app/#post?post_id=${postId}`
 
         navigator.clipboard.writeText(postUrl).then(() => {
             setIsCopied(true);
