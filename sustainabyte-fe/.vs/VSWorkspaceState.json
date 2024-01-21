@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\Components",
+    "\\src\\Components\\Posts",
+    "\\src\\Components\\Posts\\Comment",
+    "\\src\\Components\\Posts\\CreatePost",
+    "\\src\\Components\\Posts\\EventPost",
+    "\\src\\Components\\Posts\\HomepagePost",
+    "\\src\\Components\\Posts\\PopupCreatePost",
+    "\\src\\Components\\Statistics"
+  ],
+  "SelectedNode": "\\src\\Components\\Settings\\settings.tsx",
+  "PreviewInSolutionExplorer": false
+}
