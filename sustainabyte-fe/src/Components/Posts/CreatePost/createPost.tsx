@@ -28,6 +28,7 @@ const fetchCreatePost = async (token: any, post: Post) => {
     formData.append('content', post.content);
     formData.append('creatorId', post.creatorId);
     formData.append('kudos', JSON.stringify(post.kudos));
+    formData.append('location', post.location)
     if (post.mediaFile) {
         formData.append('file', post.mediaFile);
     }
@@ -58,6 +59,7 @@ function CreatePost ({handleClose}) {
     const [title, setTitle] = useState("")
     const [message, setMessage] = useState("")
     const [image, setImage] = useState(null)
+    const[county, setCounty] = useState("")
 
     const handlePost = () => {
         handleClose();
@@ -73,6 +75,10 @@ function CreatePost ({handleClose}) {
 
     const handleFileChange = (event: any) => {
         setImage(event.target.files[0])
+    }
+
+    const handleCountyChange = (event: any) => {
+        setCounty(event.target.value)
     }
 
     return (
@@ -95,9 +101,10 @@ function CreatePost ({handleClose}) {
                 xl:"100%", //1546+ pixels
             },
             }}>
-            <FormControl sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} defaultValue="" required>
-                <TextField onChange={handleTitleChange} id="outlined-basic" label="Title" variant="outlined" sx={{ width:"100%", margin: '8px', }} />
-                <TextField onChange={handleMessageChange} id="outlined-basic" label="Write your message" variant="outlined"  multiline rows={3} sx={{ width:"100%", margin: '8px' }} />
+            <FormControl sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', marginBottom: '10px', gap: '10px' }} defaultValue="" required>
+                <TextField onChange={handleTitleChange} id="outlined-basic" label="Title" variant="outlined" sx={{ width:"100%" }} />
+                <TextField onChange={handleMessageChange} id="outlined-basic" label="Write your message" variant="outlined"  multiline rows={3} sx={{ width:"100%" }} />
+                <TextField onChange={handleCountyChange} id="outlined-basic" label="County" />
             </FormControl>
 
             <Box component={"div"} sx={{
@@ -126,6 +133,7 @@ function CreatePost ({handleClose}) {
                                     "content": message,
                                     "mediaUrl": image ? URL.createObjectURL(image): '',
                                     "creatorId": "",
+                                    "location": county,
                                     "kudos": [],
                                     "comments": "",
                                     "mediaFile": image

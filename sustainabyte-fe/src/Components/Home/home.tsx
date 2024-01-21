@@ -21,6 +21,7 @@ import {BarChart} from "@mui/icons-material";
 import EventPost from "../Posts/EventPost/eventPost";
 import { Typography } from '@mui/material';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
+import PopupCreateEvent from "../Posts/EventPost/popupCreateEvent";
 interface PostsFeedProps {
     title: string;
 }
@@ -108,7 +109,6 @@ const RightFeed = (props: {seePosts: boolean, setSeePosts: any}) => {
     let keysArray: any[] = [];
     let valuesArray = [];
     if (statistics?.Locations) {
-        console.log(statistics.Locations)
          keysArray = Array.from(Object.keys(statistics.Locations));
          valuesArray = Array.from(Object.values(statistics.Locations));
     }
@@ -219,7 +219,9 @@ const LeftFeed = () => {
                 width: "20%"
             }}
         >
-            <SimplePopup></SimplePopup>
+            <SimplePopup />
+            <PopupCreateEvent />
+
             <Button
                 sx={{
                     color: "inherit"

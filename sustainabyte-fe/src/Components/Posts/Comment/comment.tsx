@@ -45,11 +45,8 @@ const CommentBox = (post: Post, user: any) => {
       };
 
       const handleComments = ()  => {
-        console.log(post_id)
         if (user) {
             if(newComment.length > 0)
-              console.log(typeof(post_id))
-              console.log(newComment)
               addComment(authKey, post_id, newComment);
               addStringToArray(newComment)
         } else {

@@ -38,11 +38,7 @@ const CommentBoxSinglePost = (props: {post: Post, user: any}) => {
         setNewComment(event.target.value);
     };
     const handleComments = () => {
-        console.log(post_id)
         if (props.user) {
-            if(newComment.length > 0)
-                console.log(typeof(post_id))
-            console.log(newComment)
             addComment(authKey, post_id, newComment);
             addStringToArray(newComment)
         } else {

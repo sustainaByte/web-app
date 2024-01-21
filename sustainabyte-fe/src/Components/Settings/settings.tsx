@@ -321,30 +321,6 @@ function LeftDrawer ({currentDrawer, setCurrentDrawer}) {
                         <ListItemText primary={"Account Information"} />
                     </ListItemButton>
                 </ListItem>
-                <ListItem key={"Posts"}
-                          sx={{
-                              "backgroundColor": currentDrawer === 1 ? theme.palette.text.disabled: theme.palette.background.default
-                          }}
-                          disablePadding>
-                    <ListItemButton onClick={() => handleClick(1)}>
-                        <ListItemIcon>
-                            <ParkIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Posts"} />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem key={"Events"}
-                          sx={{
-                              "backgroundColor": currentDrawer === 2 ? theme.palette.text.disabled: theme.palette.background.default
-                          }}
-                          disablePadding>
-                    <ListItemButton onClick={() => handleClick(2)}>
-                        <ListItemIcon>
-                            <EventIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Events"} />
-                    </ListItemButton>
-                </ListItem>
             </List>
         </Drawer>
     )

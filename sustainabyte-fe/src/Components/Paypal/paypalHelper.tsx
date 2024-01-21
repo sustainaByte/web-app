@@ -13,7 +13,7 @@ export const createOrder = async (data: any, actions: any) => {
         purchase_units: [
             {
                 amount: {
-                    value: "10",
+                    value: "100",
                 },
             },
         ],

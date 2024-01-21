@@ -4,6 +4,7 @@ export interface Post {
     "creatorId": string,
     "kudos": string[],
     "comments": string,
+    "location": string
     "mediaUrl": string,
     "mediaFile"?: Blob | null,
     "createdAt"?: string,
